@@ -1,0 +1,313 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2706
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 ! boot system flash:/CloudEOS.swi\
+!\
+no aaa root\
+no username admin\
+!\
+username ansible privilege 15 role network-admin secret sha512 \
+!\
+agent KernelFib environment KERNELFIB_PROGRAM_ALL_ECMP='true'\
+!\
+alias siib show ip int brie| exc unass\
+alias sit show int st | exc dis\
+!\
+!\
+daemon TerminAttr\
+   exec /usr/bin/TerminAttr -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -cvaddr=172.18.102.50:9910 -cvauth=token,/tmp/token -cvvrf=MGMT -taillogs\
+   no shutdown\
+!\
+switchport default mode routed\
+!\
+transceiver qsfp default-mode 4x10G\
+!\
+service routing protocols model multi-agent\
+!\
+hostname CE1\
+ip name-server vrf default 10.255.0.2\
+!\
+spanning-tree mode mstp\
+!\
+vlan 11-12,21-22,101,111\
+!\
+vrf instance MGMT\
+!\
+vrf instance VRFA\
+!\
+management api http-commands\
+   no shutdown\
+   !\
+   vrf MGMT\
+      no shutdown\
+!\
+interface Port-Channel101\
+   switchport trunk allowed vlan 1-1000\
+   switchport mode trunk\
+   switchport\
+!\
+interface Ethernet1\
+   no switchport\
+   channel-group 101 mode active\
+!\
+interface Ethernet2\
+   no switchport\
+   channel-group 101 mode active\
+!\
+interface Ethernet3\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet4\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet5\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet6\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet7\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet8\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet9\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet10\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet11\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet12\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet13\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet14\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet15\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet16\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet17\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet18\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet19\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet20\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet21\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet22\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet23\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet24\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet25\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet26\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet27\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet28\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet29\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet30\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet31\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet32\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet33\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet34\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet35\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet36\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet37\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet38\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet39\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet40\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet41\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet42\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet43\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet44\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet45\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet46\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet47\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet48\
+   shutdown\
+   no switchport\
+!\
+interface Ethernet49/1\
+   no switchport\
+!\
+interface Ethernet50/1\
+   no switchport\
+!\
+interface Ethernet51/1\
+   no switchport\
+!\
+interface Ethernet52/1\
+   no switchport\
+!\
+interface Ethernet53/1\
+   no switchport\
+!\
+interface Ethernet54/1\
+   no switchport\
+!\
+interface Ethernet55/1\
+   no switchport\
+!\
+interface Ethernet56/1\
+   no switchport\
+!\
+interface Loopback101\
+   vrf VRFA\
+   ip address 101.101.101.101/32\
+!\
+interface Management1\
+   description oob_management\
+   vrf MGMT\
+   ip address 172.18.102.10/24\
+!\
+interface Vlan11\
+   ip address 10.10.11.101/24\
+!\
+interface Vlan12\
+   ip address 10.10.12.101/24\
+!\
+interface Vlan21\
+   ip address 10.10.21.101/24\
+!\
+interface Vlan22\
+   ip address 10.10.22.101/24\
+!\
+interface Vlan101\
+   vrf VRFA\
+   ip address 10.10.101.101/24\
+!\
+interface Vlan111\
+   vrf VRFA\
+   ip address 10.10.111.101/24\
+!\
+monitor connectivity\
+!\
+ip routing\
+ip routing vrf MGMT\
+ip routing vrf VRFA\
+!\
+ip route vrf MGMT 0.0.0.0/0 172.18.102.1\
+!\
+router bgp 65111\
+   router-id 101.101.101.101\
+   !\
+   vrf VRFA\
+      neighbor 10.10.101.102 remote-as 65101\
+      neighbor 10.10.111.102 remote-as 65101\
+      redistribute connected\
+!}

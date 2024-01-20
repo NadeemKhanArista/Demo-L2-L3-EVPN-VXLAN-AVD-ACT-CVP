@@ -1,0 +1,324 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2706
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww19080\viewh12180\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 ! device: CE4 (vEOS-lab, EOS-4.29.6M)\
+!\
+! boot system flash:/CloudEOS.swi\
+!\
+no aaa root\
+!\
+username admin privilege 15 role network-admin nopassword\
+\
+agent KernelFib environment KERNELFIB_PROGRAM_ALL_ECMP='true'\
+!\
+alias siib show ip int brie| exc unass\
+alias sit show int st | exc dis\
+!\
+daemon TerminAttr\
+   exec /usr/bin/TerminAttr -cvaddr=172.18.102.50:9910 -cvauth=token,/tmp/token -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\
+   no shutdown\
+!\
+switchport default mode routed\
+!\
+vlan internal order ascending range 1006 1199\
+!\
+transceiver qsfp default-mode 4x10G\
+!\
+service routing protocols model ribd\
+!\
+hostname CE4\
+ip name-server vrf default 10.255.0.2\
+!\
+spanning-tree mode mstp\
+no spanning-tree vlan-id 4093-4094\
+spanning-tree mst 0 priority 4096\
+!\
+vlan 11\
+   name VRF10_VLAN11\
+!\
+vlan 12\
+   name VRF10_VLAN12\
+!\
+vlan 21\
+   name VRF11_VLAN21\
+!\
+vlan 22\
+   name VRF11_VLAN22\
+!\
+vlan 104\
+!\
+vlan 300\
+   name MLAG_iBGP_VRFA\
+   trunk group LEAF_PEER_L3\
+!\
+vlan 4093\
+   name LEAF_PEER_L3\
+   trunk group LEAF_PEER_L3\
+!\
+vlan 4094\
+   name MLAG_PEER\
+   trunk group MLAG\
+!\
+vrf instance MGMT\
+!\
+vrf instance VRFA\
+!\
+management api http-commands\
+   no shutdown\
+!\
+interface Port-Channel34\
+   switchport mode trunk\
+   switchport\
+   mlag 34\
+!\
+interface Port-Channel511\
+   description CE3_CE4_Po511\
+   switchport mode trunk\
+   switchport trunk group LEAF_PEER_L3\
+   switchport trunk group MLAG\
+   switchport\
+!\
+interface Ethernet1\
+   no switchport\
+!\
+interface Ethernet2\
+   no switchport\
+!\
+interface Ethernet3\
+   no switchport\
+!\
+interface Ethernet3/6\
+   no switchport\
+   channel-group 34 mode active\
+!\
+interface Ethernet4\
+   no switchport\
+!\
+interface Ethernet5\
+   no switchport\
+!\
+interface Ethernet6\
+   no switchport\
+!\
+interface Ethernet7\
+   no switchport\
+!\
+interface Ethernet8\
+   no switchport\
+!\
+interface Ethernet9\
+   no switchport\
+!\
+interface Ethernet10\
+   no switchport\
+!\
+interface Ethernet11\
+   no switchport\
+!\
+interface Ethernet12\
+   no switchport\
+!\
+interface Ethernet13\
+   no switchport\
+!\
+interface Ethernet14\
+   no switchport\
+!\
+interface Ethernet15\
+   no switchport\
+!\
+interface Ethernet16\
+   no switchport\
+!\
+interface Ethernet17\
+   no switchport\
+!\
+interface Ethernet18\
+   no switchport\
+!\
+interface Ethernet19\
+   no switchport\
+!\
+interface Ethernet20\
+   no switchport\
+!\
+interface Ethernet21\
+   no switchport\
+!\
+interface Ethernet22\
+   no switchport\
+!\
+interface Ethernet23\
+   no switchport\
+!\
+interface Ethernet24\
+   no switchport\
+!\
+interface Ethernet25\
+   no switchport\
+!\
+interface Ethernet26\
+   no switchport\
+!\
+interface Ethernet27\
+   no switchport\
+!\
+interface Ethernet28\
+   no switchport\
+!\
+interface Ethernet29\
+   no switchport\
+!\
+interface Ethernet30\
+   no switchport\
+!\
+interface Ethernet31\
+   no switchport\
+!\
+interface Ethernet32\
+   no switchport\
+!\
+interface Ethernet33\
+   no switchport\
+!\
+interface Ethernet34\
+   no switchport\
+!\
+interface Ethernet35\
+   no switchport\
+!\
+interface Ethernet36\
+   no switchport\
+!\
+interface Ethernet37\
+   no switchport\
+!\
+interface Ethernet38\
+   no switchport\
+!\
+interface Ethernet39\
+   no switchport\
+!\
+interface Ethernet40\
+   no switchport\
+!\
+interface Ethernet41\
+   no switchport\
+!\
+interface Ethernet42\
+   no switchport\
+!\
+interface Ethernet43\
+   no switchport\
+!\
+interface Ethernet44\
+   no switchport\
+!\
+interface Ethernet45\
+   no switchport\
+!\
+interface Ethernet46\
+   no switchport\
+!\
+interface Ethernet47\
+   no switchport\
+!\
+interface Ethernet48\
+   no switchport\
+!\
+interface Ethernet49/1\
+   no switchport\
+!\
+interface Ethernet50/1\
+   no switchport\
+!\
+interface Ethernet51/1\
+   description CE3_CE4_Po511_Ethernet51/1\
+   no switchport\
+   channel-group 511 mode active\
+!\
+interface Ethernet52/1\
+   description CE3_CE4_Po511_Ethernet52/1\
+   no switchport\
+   channel-group 511 mode active\
+!\
+interface Ethernet53/1\
+   no switchport\
+!\
+interface Ethernet54/1\
+   no switchport\
+!\
+interface Ethernet55/1\
+   no switchport\
+!\
+interface Ethernet56/1\
+   no switchport\
+!\
+interface Loopback102\
+!\
+interface Loopback104\
+   vrf VRFA\
+   ip address 104.104.104.104/32\
+!\
+interface Management1\
+   description oob_management\
+   vrf MGMT\
+   ip address 172.18.102.14/24\
+!\
+interface Vlan11\
+   ip address 10.10.11.104/24\
+!\
+interface Vlan12\
+   ip address 10.10.12.104/24\
+!\
+interface Vlan21\
+   ip address 10.10.21.104/24\
+!\
+interface Vlan22\
+   ip address 10.10.22.104/24\
+!\
+interface Vlan104\
+   vrf VRFA\
+   ip address 10.10.104.101/24\
+!\
+interface Vlan300\
+   description MLAG_PEER_L3_iBGP: vrf VRFA\
+   vrf VRFA\
+   ip address 10.255.34.4/24\
+!\
+interface Vlan4093\
+   description MLAG_PEER_L3_PEERING\
+   ip address 10.255.3.100/24\
+!\
+interface Vlan4094\
+   description MLAG_PEER\
+   no autostate\
+   ip address 10.255.1.65/31\
+!\
+no ip routing\
+no ip routing vrf MGMT\
+ip routing vrf VRFA\
+!\
+mlag configuration\
+   domain-id DC1_L3_LEAF1\
+   local-interface Vlan4094\
+   peer-address 10.255.1.64\
+   peer-link Port-Channel511\
+   reload-delay mlag 300\
+   reload-delay non-mlag 330\
+!\
+ip route vrf MGMT 0.0.0.0/0 172.18.102.1\
+!\
+router bgp 65144\
+   router-id 104.104.104.104\
+   !\
+   vrf VRFA\
+      neighbor 10.10.104.102 remote-as 65103\
+      neighbor 10.255.34.3 remote-as 65133\
+      redistribute connected\
+!\
+}
