@@ -1,0 +1,186 @@
+veos:
+  # Define the global vEOS node parameters
+  username: nadeem
+  password: arista
+  version: 4.29.6M
+
+cvp:
+  # Define the global CVP node parameters
+  username: nadeem
+  password: arista
+  version: 2023.3.0
+  instance: singlenode
+
+generic:
+  # Define the global generic node parameters
+  version: Rocky-8.5
+  username: nadeem
+  password: arista
+
+
+links:
+# spine-1 connections
+  - connection:
+    - MCI-CTFSTL-SP01:Ethernet49/1
+    - MCI-CTFSTL-LF01a:Ethernet49/1
+  - connection:
+    - MCI-CTFSTL-SP01:Ethernet50/1
+    - MCI-CTFSTL-LF01b:Ethernet49/1
+  - connection:
+    - MCI-CTFSTL-SP01:Ethernet51/1
+    - MCI-CTFSTL-LF02a:Ethernet49/1
+  - connection:
+    - MCI-CTFSTL-SP01:Ethernet52/1
+    - MCI-CTFSTL-LF02b:Ethernet49/1
+  - connection:
+    - MCI-CTFSTL-SP01:Ethernet53/1
+    - MCI-CTFSTL-LF03a:Ethernet49/1
+  - connection:
+    - MCI-CTFSTL-SP01:Ethernet54/1
+    - MCI-CTFSTL-LF03b:Ethernet49/1
+# spine-2 connections
+  - connection:
+    - MCI-CTFSTL-SP02:Ethernet49/1
+    - MCI-CTFSTL-LF01a:Ethernet50/1
+  - connection:
+    - MCI-CTFSTL-SP02:Ethernet50/1
+    - MCI-CTFSTL-LF01b:Ethernet50/1
+  - connection:
+    - MCI-CTFSTL-SP02:Ethernet51/1
+    - MCI-CTFSTL-LF02a:Ethernet50/1
+  - connection:
+    - MCI-CTFSTL-SP02:Ethernet52/1
+    - MCI-CTFSTL-LF02b:Ethernet50/1
+  - connection:
+    - MCI-CTFSTL-SP02:Ethernet54/1
+    - MCI-CTFSTL-LF03a:Ethernet50/1
+  - connection:
+    - MCI-CTFSTL-SP02:Ethernet53/1
+    - MCI-CTFSTL-LF03b:Ethernet50/1
+
+# dc-compute  - connection:
+  - connection:
+    - MCI-CTFSTL-LF01a:Ethernet20
+    - CE1:Ethernet1
+  - connection:
+    - MCI-CTFSTL-LF01b:Ethernet20
+    - CE1:Ethernet2
+  - connection:
+    - MCI-CTFSTL-LF02a:Ethernet20
+    - CE2:Ethernet1
+  - connection:
+    - MCI-CTFSTL-LF02b:Ethernet20
+    - CE2:Ethernet2
+  - connection:
+    - MCI-CTFSTL-LF03a:Ethernet7
+    - CE3:Ethernet3/5
+  - connection:
+    - MCI-CTFSTL-LF03b:Ethernet8
+    - CE4:Ethernet3/6
+
+# MLAG  - connection:
+  - connection:
+    - MCI-CTFSTL-LF01a:Ethernet51/1
+    - MCI-CTFSTL-LF01b:Ethernet51/1
+  - connection:
+    - MCI-CTFSTL-LF01a:Ethernet52/1
+    - MCI-CTFSTL-LF01b:Ethernet52/1
+  
+  - connection:
+    - MCI-CTFSTL-LF02a:Ethernet51/1
+    - MCI-CTFSTL-LF02b:Ethernet51/1
+  - connection:
+    - MCI-CTFSTL-LF02a:Ethernet52/1
+    - MCI-CTFSTL-LF02b:Ethernet52/1
+
+  - connection:
+    - MCI-CTFSTL-LF03a:Ethernet51/1
+    - MCI-CTFSTL-LF03b:Ethernet51/1
+  - connection:
+    - MCI-CTFSTL-LF03a:Ethernet52/1
+    - MCI-CTFSTL-LF03b:Ethernet52/1
+
+  - connection:
+    - CE3:Ethernet51/1
+    - CE4:Ethernet51/1
+  - connection:
+    - CE3:Ethernet52/1
+    - CE4:Ethernet52/1
+
+nodes:
+  # Define individual node parameters
+  #   - Parameters here will override global parameters
+
+  - MCI-CTFSTL-SP01:
+      ip_addr: 172.18.102.20
+      node_type: veos
+      system_ports: 32
+      device_model: 7050SX3-48YC8
+
+  - MCI-CTFSTL-SP02:
+      ip_addr: 172.18.102.21
+      node_type: veos
+      system_ports: 32
+      device_model: 7050SX3-48YC8  
+
+  - MCI-CTFSTL-LF01a:
+      ip_addr: 172.18.102.22
+      node_type: veos
+      device_model: 7050SX3-48YC8
+  
+  - MCI-CTFSTL-LF01b:
+      ip_addr: 172.18.102.23
+      node_type: veos
+      device_model: 7050SX3-48YC8
+
+  - MCI-CTFSTL-LF02a:
+      ip_addr: 172.18.102.24
+      node_type: veos
+      device_model: 7050SX3-48YC8
+  
+  - MCI-CTFSTL-LF02b:
+      ip_addr: 172.18.102.25
+      node_type: veos
+      device_model: 7050SX3-48YC8
+ 
+  - MCI-CTFSTL-LF03a:
+      ip_addr: 172.18.102.26
+      node_type: veos
+      device_model: 7050SX3-48YC8
+  
+  - MCI-CTFSTL-LF03b:
+      ip_addr: 172.18.102.27
+      node_type: veos
+      device_model: 7050SX3-48YC8
+      
+  # Compute Nodes
+  - CE1:
+      ip_addr: 172.18.102.10
+      node_type: veos
+      device_model: 7050SX3-48YC8
+      
+  - CE2:
+      ip_addr: 172.18.102.12
+      node_type: veos
+      device_model: 7050SX3-48YC8
+     
+  - CE3:
+      ip_addr: 172.18.102.13
+      node_type: veos
+      device_model: 7050SX3-48YC8 
+  
+  - CE4:
+      ip_addr: 172.18.102.14
+      node_type: veos
+      device_model: 7050SX3-48YC8
+
+  # CVP IP address
+  - cvp:
+      ip_addr: 172.18.102.50
+      node_type: cvp
+      auto_configuration: true
+
+  - avd:
+     ip_addr: 172.18.102.11
+     node_type: generic
+ 
