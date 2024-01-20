@@ -1,0 +1,41 @@
+---
+ztp:
+  default:
+    registration: http://172.18.102.11/ztp/bootstrap
+    gateway: 172.18.102.1
+    use_system_mac: true
+  general:
+    subnets:
+      - network: 172.18.102.0
+        netmask: 255.255.255.0
+        gateway: 172.18.102.1
+        start: 172.18.102.50
+        end: 172.18.102.60
+        lease_time: 300
+  clients:
+    # l3leaf
+    - name: MCI-CTFSTL-BLF03a
+      mac: 'ac:3d:94:75:30:ce'
+      ip4: 172.18.102.26
+    - name: MCI-CTFSTL-BLF03b
+      mac: 'ac:3d:94:75:11:18'
+      ip4: 172.18.102.27
+    - name: MCI-CTFSTL-LF01a
+      mac: 'ac:3d:94:75:2c:f6'
+      ip4: 172.18.102.22
+    - name: MCI-CTFSTL-LF01b
+      mac: 'ac:3d:94:75:0f:d0'
+      ip4: 172.18.102.23
+    - name: MCI-CTFSTL-LF02a
+      mac: 'ac:3d:94:75:1d:96'
+      ip4: 172.18.102.24
+    - name: MCI-CTFSTL-LF02b
+      mac: 'ac:3d:94:74:1c:0e'
+      ip4: 172.18.102.25
+    # spine
+    - name: MCI-CTFSTL-SP01
+      mac: 'ac:3d:94:75:1a:62'
+      ip4: 172.18.102.20
+    - name: MCI-CTFSTL-SP02
+      mac: 'ac:3d:94:75:13:56'
+      ip4: 172.18.102.21

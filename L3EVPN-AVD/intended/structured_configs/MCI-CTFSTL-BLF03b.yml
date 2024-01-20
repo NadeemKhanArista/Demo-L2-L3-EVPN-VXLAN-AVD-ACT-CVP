@@ -1,0 +1,509 @@
+hostname: MCI-CTFSTL-BLF03b
+is_deployed: true
+router_bgp:
+  as: '65103'
+  router_id: 10.255.0.8
+  bgp:
+    default:
+      ipv4_unicast: false
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  peer_groups:
+  - name: MLAG-IPv4-UNDERLAY-PEER
+    type: ipv4
+    remote_as: '65103'
+    next_hop_self: true
+    description: MCI-CTFSTL-BLF03a
+    maximum_routes: 12000
+    send_community: all
+    route_map_in: RM-MLAG-PEER-IN
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    maximum_routes: 12000
+    send_community: all
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    send_community: all
+    maximum_routes: 0
+    ebgp_multihop: 3
+  address_family_ipv4:
+    peer_groups:
+    - name: MLAG-IPv4-UNDERLAY-PEER
+      activate: true
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  neighbors:
+  - ip_address: 10.255.1.104
+    peer_group: MLAG-IPv4-UNDERLAY-PEER
+    peer: MCI-CTFSTL-BLF03a
+    description: MCI-CTFSTL-BLF03a
+  - ip_address: 10.255.255.20
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65100'
+    peer: MCI-CTFSTL-SP01
+    description: MCI-CTFSTL-SP01_Ethernet54/1
+  - ip_address: 10.255.255.22
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65100'
+    peer: MCI-CTFSTL-SP02
+    description: MCI-CTFSTL-SP02_Ethernet53/1
+  - ip_address: 10.255.0.1
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: MCI-CTFSTL-SP01
+    description: MCI-CTFSTL-SP01
+    remote_as: '65100'
+  - ip_address: 10.255.0.2
+    peer_group: EVPN-OVERLAY-PEERS
+    peer: MCI-CTFSTL-SP02
+    description: MCI-CTFSTL-SP02
+    remote_as: '65100'
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  vrfs:
+  - name: VRF10
+    router_id: 10.255.0.8
+    rd: 10.255.0.8:10
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+    redistribute_routes:
+    - source_protocol: connected
+    neighbors:
+    - ip_address: 10.255.1.104
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - name: VRF11
+    router_id: 10.255.0.8
+    rd: 10.255.0.8:11
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+    redistribute_routes:
+    - source_protocol: connected
+    neighbors:
+    - ip_address: 10.255.1.104
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+  - name: VRFA
+    router_id: 10.255.0.8
+    rd: 10.255.0.8:12
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '12:12'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '12:12'
+    redistribute_routes:
+    - source_protocol: connected
+    neighbors:
+    - ip_address: 10.255.1.104
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+    - ip_address: 10.10.104.101
+      remote_as: '65144'
+      description: CE4_VLAN104
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 10.10.104.101
+        activate: true
+  vlans:
+  - id: 11
+    tenant: TENANT1
+    rd: 10.255.0.8:10011
+    route_targets:
+      both:
+      - 10011:10011
+    redistribute_routes:
+    - learned
+  - id: 12
+    tenant: TENANT1
+    rd: 10.255.0.8:10012
+    route_targets:
+      both:
+      - 10012:10012
+    redistribute_routes:
+    - learned
+  - id: 21
+    tenant: TENANT1
+    rd: 10.255.0.8:10021
+    route_targets:
+      both:
+      - 10021:10021
+    redistribute_routes:
+    - learned
+  - id: 22
+    tenant: TENANT1
+    rd: 10.255.0.8:10022
+    route_targets:
+      both:
+      - 10022:10022
+    redistribute_routes:
+    - learned
+  - id: 104
+    tenant: TENANT1
+    rd: 10.255.0.8:10104
+    route_targets:
+      both:
+      - 10104:10104
+    redistribute_routes:
+    - learned
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 172.18.102.1
+service_routing_protocols_model: multi-agent
+ip_routing: true
+daemon_terminattr:
+  cvaddrs:
+  - 172.18.102.50:9910
+  cvauth:
+    method: token
+    token_file: /tmp/token
+  cvvrf: MGMT
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  disable_aaa: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+ip_name_servers:
+- ip_address: 8.8.8.8
+  vrf: MGMT
+spanning_tree:
+  mode: mstp
+  mst_instances:
+  - id: '0'
+    priority: 4096
+  no_spanning_tree_vlan: 4093-4094
+local_users:
+- name: admin
+  privilege: 15
+  role: network-admin
+  no_password: true
+- name: ansible
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: VRF10
+  tenant: TENANT1
+  ip_routing: true
+- name: VRF11
+  tenant: TENANT1
+  ip_routing: true
+- name: VRFA
+  tenant: TENANT1
+  ip_routing: true
+management_interfaces:
+- name: Management1
+  description: oob_management
+  shutdown: false
+  vrf: MGMT
+  ip_address: 172.18.102.27/24
+  gateway: 172.18.102.1
+  type: oob
+management_api_http:
+  enable_vrfs:
+  - name: MGMT
+  enable_https: true
+vlans:
+- id: 4093
+  tenant: system
+  name: LEAF_PEER_L3
+  trunk_groups:
+  - LEAF_PEER_L3
+- id: 4094
+  tenant: system
+  name: MLAG_PEER
+  trunk_groups:
+  - MLAG
+- id: 11
+  name: VRF10_VLAN11
+  tenant: TENANT1
+- id: 12
+  name: VRF10_VLAN12
+  tenant: TENANT1
+- id: 3009
+  name: MLAG_iBGP_VRF10
+  trunk_groups:
+  - LEAF_PEER_L3
+  tenant: TENANT1
+- id: 21
+  name: VRF11_VLAN21
+  tenant: TENANT1
+- id: 22
+  name: VRF11_VLAN22
+  tenant: TENANT1
+- id: 3010
+  name: MLAG_iBGP_VRF11
+  trunk_groups:
+  - LEAF_PEER_L3
+  tenant: TENANT1
+- id: 104
+  name: Mayday_VLAN
+  tenant: TENANT1
+- id: 3011
+  name: MLAG_iBGP_VRFA
+  trunk_groups:
+  - LEAF_PEER_L3
+  tenant: TENANT1
+vlan_interfaces:
+- name: Vlan4093
+  description: MLAG_PEER_L3_PEERING
+  shutdown: false
+  mtu: 1500
+  ip_address: 10.255.1.105/31
+- name: Vlan4094
+  description: MLAG_PEER
+  shutdown: false
+  ip_address: 10.255.1.73/31
+  no_autostate: true
+  mtu: 1500
+- name: Vlan11
+  tenant: TENANT1
+  tags:
+  - evpn_services
+  description: VRF10_VLAN11
+  shutdown: false
+  ip_address_virtual: 10.10.11.1/24
+  vrf: VRF10
+- name: Vlan12
+  tenant: TENANT1
+  tags:
+  - evpn_services
+  description: VRF10_VLAN12
+  shutdown: false
+  ip_address_virtual: 10.10.12.1/24
+  vrf: VRF10
+- name: Vlan3009
+  tenant: TENANT1
+  type: underlay_peering
+  shutdown: false
+  description: 'MLAG_PEER_L3_iBGP: vrf VRF10'
+  vrf: VRF10
+  mtu: 1500
+  ip_address: 10.255.1.105/31
+- name: Vlan21
+  tenant: TENANT1
+  tags:
+  - evpn_services
+  description: VRF11_VLAN21
+  shutdown: false
+  ip_address_virtual: 10.10.21.1/24
+  vrf: VRF11
+- name: Vlan22
+  tenant: TENANT1
+  tags:
+  - evpn_services
+  description: VRF11_VLAN22
+  shutdown: false
+  ip_address_virtual: 10.10.22.1/24
+  vrf: VRF11
+- name: Vlan3010
+  tenant: TENANT1
+  type: underlay_peering
+  shutdown: false
+  description: 'MLAG_PEER_L3_iBGP: vrf VRF11'
+  vrf: VRF11
+  mtu: 1500
+  ip_address: 10.255.1.105/31
+- name: Vlan104
+  tenant: TENANT1
+  tags:
+  - MCI-CTFSTL-BLF03b
+  description: Mayday_VLAN
+  shutdown: false
+  ip_address: 10.10.104.102/24
+  vrf: VRFA
+- name: Vlan3011
+  tenant: TENANT1
+  type: underlay_peering
+  shutdown: false
+  description: 'MLAG_PEER_L3_iBGP: vrf VRFA'
+  vrf: VRFA
+  mtu: 1500
+  ip_address: 10.255.1.105/31
+port_channel_interfaces:
+- name: Port-Channel511
+  description: MLAG_PEER_MCI-CTFSTL-BLF03a_Po511
+  type: switched
+  shutdown: false
+  mode: trunk
+  trunk_groups:
+  - LEAF_PEER_L3
+  - MLAG
+- name: Port-Channel7
+  description: ce34
+  type: switched
+  shutdown: false
+  mode: trunk
+  vlans: 10,11,12,21,22,103,104
+  mlag: 7
+ethernet_interfaces:
+- name: Ethernet51/1
+  peer: MCI-CTFSTL-BLF03a
+  peer_interface: Ethernet51/1
+  peer_type: mlag_peer
+  description: MLAG_PEER_MCI-CTFSTL-BLF03a_Ethernet51/1
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 511
+    mode: active
+- name: Ethernet52/1
+  peer: MCI-CTFSTL-BLF03a
+  peer_interface: Ethernet52/1
+  peer_type: mlag_peer
+  description: MLAG_PEER_MCI-CTFSTL-BLF03a_Ethernet52/1
+  type: port-channel-member
+  shutdown: false
+  channel_group:
+    id: 511
+    mode: active
+- name: Ethernet49/1
+  peer: MCI-CTFSTL-SP01
+  peer_interface: Ethernet54/1
+  peer_type: spine
+  description: P2P_LINK_TO_MCI-CTFSTL-SP01_Ethernet54/1
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.255.255.21/31
+- name: Ethernet50/1
+  peer: MCI-CTFSTL-SP02
+  peer_interface: Ethernet53/1
+  peer_type: spine
+  description: P2P_LINK_TO_MCI-CTFSTL-SP02_Ethernet53/1
+  shutdown: false
+  mtu: 1500
+  type: routed
+  ip_address: 10.255.255.23/31
+- name: Ethernet8
+  peer: ce34
+  peer_interface: Ethernet3/6
+  peer_type: router
+  port_profile: L2-Trunk-to-CE
+  description: ce34_Ethernet3/6
+  shutdown: false
+  type: port-channel-member
+  channel_group:
+    id: 7
+    mode: active
+mlag_configuration:
+  domain_id: DC1_L3_BRD
+  local_interface: Vlan4094
+  peer_address: 10.255.1.72
+  peer_link: Port-Channel511
+  reload_delay_mlag: '300'
+  reload_delay_non_mlag: '330'
+route_maps:
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - origin incomplete
+    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+loopback_interfaces:
+- name: Loopback0
+  description: EVPN_Overlay_Peering
+  shutdown: false
+  ip_address: 10.255.0.8/32
+- name: Loopback1
+  description: VTEP_VXLAN_Tunnel_Source
+  shutdown: false
+  ip_address: 10.255.1.7/32
+- name: Loopback10
+  description: VRF10_VTEP_DIAGNOSTICS
+  shutdown: false
+  vrf: VRF10
+  ip_address: 10.255.10.8/32
+- name: Loopback11
+  description: VRF11_VTEP_DIAGNOSTICS
+  shutdown: false
+  vrf: VRF11
+  ip_address: 10.255.11.8/32
+- name: Loopback12
+  description: VRFA_VTEP_DIAGNOSTICS
+  shutdown: false
+  vrf: VRFA
+  ip_address: 10.255.11.8/32
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.0.0/27 eq 32
+  - sequence: 20
+    action: permit 10.255.1.0/27 eq 32
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+ip_igmp_snooping:
+  globally_enabled: true
+ip_virtual_router_mac_address: 00:1c:73:00:00:99
+vxlan_interface:
+  Vxlan1:
+    description: MCI-CTFSTL-BLF03b_VTEP
+    vxlan:
+      udp_port: 4789
+      source_interface: Loopback1
+      virtual_router_encapsulation_mac_address: mlag-system-id
+      vlans:
+      - id: 11
+        vni: 10011
+      - id: 12
+        vni: 10012
+      - id: 21
+        vni: 10021
+      - id: 22
+        vni: 10022
+      - id: 104
+        vni: 10104
+      vrfs:
+      - name: VRF10
+        vni: 10
+      - name: VRF11
+        vni: 11
+      - name: VRFA
+        vni: 12
+virtual_source_nat_vrfs:
+- name: VRF10
+  ip_address: 10.255.10.8
+- name: VRF11
+  ip_address: 10.255.11.8
+- name: VRFA
+  ip_address: 10.255.11.8

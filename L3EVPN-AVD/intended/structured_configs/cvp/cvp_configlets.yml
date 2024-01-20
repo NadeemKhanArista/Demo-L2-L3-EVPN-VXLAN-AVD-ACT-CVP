@@ -1,0 +1,819 @@
+cvp_configlets:
+  AVD-FABRIC-_MCI-CTFSTL-BLF03a: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n
+    \  exec /usr/bin/TerminAttr -cvaddr=172.18.102.50:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname MCI-CTFSTL-BLF03a\nip name-server
+    vrf MGMT 8.8.8.8\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree
+    mst 0 priority 4096\n!\nno enable password\nno aaa root\n!\nusername admin privilege
+    15 role network-admin nopassword\nusername ansible privilege 15 role network-admin
+    secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920\n!\nvlan
+    11\n   name VRF10_VLAN11\n!\nvlan 12\n   name VRF10_VLAN12\n!\nvlan 21\n   name
+    VRF11_VLAN21\n!\nvlan 22\n   name VRF11_VLAN22\n!\nvlan 103\n   name Roddy_VLAN\n!\nvlan
+    3009\n   name MLAG_iBGP_VRF10\n   trunk group LEAF_PEER_L3\n!\nvlan 3010\n   name
+    MLAG_iBGP_VRF11\n   trunk group LEAF_PEER_L3\n!\nvlan 3011\n   name MLAG_iBGP_VRFA\n
+    \  trunk group LEAF_PEER_L3\n!\nvlan 4093\n   name LEAF_PEER_L3\n   trunk group
+    LEAF_PEER_L3\n!\nvlan 4094\n   name MLAG_PEER\n   trunk group MLAG\n!\nvrf instance
+    MGMT\n!\nvrf instance VRF10\n!\nvrf instance VRF11\n!\nvrf instance VRFA\n!\ninterface
+    Port-Channel7\n   description ce34\n   no shutdown\n   switchport\n   switchport
+    trunk allowed vlan 10,11,12,21,22,103,104\n   switchport mode trunk\n   mlag 7\n!\ninterface
+    Port-Channel511\n   description MLAG_PEER_MCI-CTFSTL-BLF03b_Po511\n   no shutdown\n
+    \  switchport\n   switchport mode trunk\n   switchport trunk group LEAF_PEER_L3\n
+    \  switchport trunk group MLAG\n!\ninterface Ethernet7\n   description ce34_Ethernet3/5\n
+    \  no shutdown\n   channel-group 7 mode active\n!\ninterface Ethernet49/1\n   description
+    P2P_LINK_TO_MCI-CTFSTL-SP01_Ethernet53/1\n   no shutdown\n   mtu 1500\n   no switchport\n
+    \  ip address 10.255.255.17/31\n!\ninterface Ethernet50/1\n   description P2P_LINK_TO_MCI-CTFSTL-SP02_Ethernet54/1\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.255.19/31\n!\ninterface
+    Ethernet51/1\n   description MLAG_PEER_MCI-CTFSTL-BLF03b_Ethernet51/1\n   no shutdown\n
+    \  channel-group 511 mode active\n!\ninterface Ethernet52/1\n   description MLAG_PEER_MCI-CTFSTL-BLF03b_Ethernet52/1\n
+    \  no shutdown\n   channel-group 511 mode active\n!\ninterface Loopback0\n   description
+    EVPN_Overlay_Peering\n   no shutdown\n   ip address 10.255.0.7/32\n!\ninterface
+    Loopback1\n   description VTEP_VXLAN_Tunnel_Source\n   no shutdown\n   ip address
+    10.255.1.7/32\n!\ninterface Loopback10\n   description VRF10_VTEP_DIAGNOSTICS\n
+    \  no shutdown\n   vrf VRF10\n   ip address 10.255.10.7/32\n!\ninterface Loopback11\n
+    \  description VRF11_VTEP_DIAGNOSTICS\n   no shutdown\n   vrf VRF11\n   ip address
+    10.255.11.7/32\n!\ninterface Loopback12\n   description VRFA_VTEP_DIAGNOSTICS\n
+    \  no shutdown\n   vrf VRFA\n   ip address 10.255.11.7/32\n!\ninterface Management1\n
+    \  description oob_management\n   no shutdown\n   vrf MGMT\n   ip address 172.18.102.26/24\n!\ninterface
+    Vlan11\n   description VRF10_VLAN11\n   no shutdown\n   vrf VRF10\n   ip address
+    virtual 10.10.11.1/24\n!\ninterface Vlan12\n   description VRF10_VLAN12\n   no
+    shutdown\n   vrf VRF10\n   ip address virtual 10.10.12.1/24\n!\ninterface Vlan21\n
+    \  description VRF11_VLAN21\n   no shutdown\n   vrf VRF11\n   ip address virtual
+    10.10.21.1/24\n!\ninterface Vlan22\n   description VRF11_VLAN22\n   no shutdown\n
+    \  vrf VRF11\n   ip address virtual 10.10.22.1/24\n!\ninterface Vlan103\n   description
+    Roddy_VLAN\n   no shutdown\n   vrf VRFA\n   ip address 10.10.103.102/24\n!\ninterface
+    Vlan3009\n   description MLAG_PEER_L3_iBGP: vrf VRF10\n   no shutdown\n   mtu
+    1500\n   vrf VRF10\n   ip address 10.255.1.104/31\n!\ninterface Vlan3010\n   description
+    MLAG_PEER_L3_iBGP: vrf VRF11\n   no shutdown\n   mtu 1500\n   vrf VRF11\n   ip
+    address 10.255.1.104/31\n!\ninterface Vlan3011\n   description MLAG_PEER_L3_iBGP:
+    vrf VRFA\n   no shutdown\n   mtu 1500\n   vrf VRFA\n   ip address 10.255.1.104/31\n!\ninterface
+    Vlan4093\n   description MLAG_PEER_L3_PEERING\n   no shutdown\n   mtu 1500\n   ip
+    address 10.255.1.104/31\n!\ninterface Vlan4094\n   description MLAG_PEER\n   no
+    shutdown\n   mtu 1500\n   no autostate\n   ip address 10.255.1.72/31\n!\ninterface
+    Vxlan1\n   description MCI-CTFSTL-BLF03a_VTEP\n   vxlan source-interface Loopback1\n
+    \  vxlan virtual-router encapsulation mac-address mlag-system-id\n   vxlan udp-port
+    4789\n   vxlan vlan 11 vni 10011\n   vxlan vlan 12 vni 10012\n   vxlan vlan 21
+    vni 10021\n   vxlan vlan 22 vni 10022\n   vxlan vlan 103 vni 10103\n   vxlan vrf
+    VRF10 vni 10\n   vxlan vrf VRF11 vni 11\n   vxlan vrf VRFA vni 12\n!\nip virtual-router
+    mac-address 00:1c:73:00:00:99\n!\nip address virtual source-nat vrf VRF10 address
+    10.255.10.7\nip address virtual source-nat vrf VRF11 address 10.255.11.7\nip address
+    virtual source-nat vrf VRFA address 10.255.11.7\n!\nip routing\nno ip routing
+    vrf MGMT\nip routing vrf VRF10\nip routing vrf VRF11\nip routing vrf VRFA\n!\nip
+    prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 10.255.0.0/27 eq 32\n
+    \  seq 20 permit 10.255.1.0/27 eq 32\n!\nmlag configuration\n   domain-id DC1_L3_BRD\n
+    \  local-interface Vlan4094\n   peer-address 10.255.1.73\n   peer-link Port-Channel511\n
+    \  reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0
+    172.18.102.1\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list
+    PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN permit 10\n   description
+    Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal
+    routing\n   set origin incomplete\n!\nrouter bfd\n   multihop interval 300 min-rx
+    300 multiplier 3\n!\nrouter bgp 65103\n   router-id 10.255.0.7\n   maximum-paths
+    4 ecmp 4\n   no bgp default ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer
+    group\n   neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
+    bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS
+    send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
+    peer group\n   neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER remote-as 65103\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER description MCI-CTFSTL-BLF03b\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes
+    12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor
+    10.255.0.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.255.0.1 remote-as 65100\n
+    \  neighbor 10.255.0.1 description MCI-CTFSTL-SP01\n   neighbor 10.255.0.2 peer
+    group EVPN-OVERLAY-PEERS\n   neighbor 10.255.0.2 remote-as 65100\n   neighbor
+    10.255.0.2 description MCI-CTFSTL-SP02\n   neighbor 10.255.1.105 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \  neighbor 10.255.1.105 description MCI-CTFSTL-BLF03b\n   neighbor 10.255.255.16
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.16 remote-as 65100\n   neighbor
+    10.255.255.16 description MCI-CTFSTL-SP01_Ethernet53/1\n   neighbor 10.255.255.18
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.18 remote-as 65100\n   neighbor
+    10.255.255.18 description MCI-CTFSTL-SP02_Ethernet54/1\n   redistribute connected
+    route-map RM-CONN-2-BGP\n   !\n   vlan 103\n      rd 10.255.0.7:10103\n      route-target
+    both 10103:10103\n      redistribute learned\n   !\n   vlan 11\n      rd 10.255.0.7:10011\n
+    \     route-target both 10011:10011\n      redistribute learned\n   !\n   vlan
+    12\n      rd 10.255.0.7:10012\n      route-target both 10012:10012\n      redistribute
+    learned\n   !\n   vlan 21\n      rd 10.255.0.7:10021\n      route-target both
+    10021:10021\n      redistribute learned\n   !\n   vlan 22\n      rd 10.255.0.7:10022\n
+    \     route-target both 10022:10022\n      redistribute learned\n   !\n   address-family
+    evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n
+    \     no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS
+    activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf VRF10\n
+    \     rd 10.255.0.7:10\n      route-target import evpn 10:10\n      route-target
+    export evpn 10:10\n      router-id 10.255.0.7\n      neighbor 10.255.1.105 peer
+    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf VRF11\n
+    \     rd 10.255.0.7:11\n      route-target import evpn 11:11\n      route-target
+    export evpn 11:11\n      router-id 10.255.0.7\n      neighbor 10.255.1.105 peer
+    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf VRFA\n
+    \     rd 10.255.0.7:12\n      route-target import evpn 12:12\n      route-target
+    export evpn 12:12\n      router-id 10.255.0.7\n      neighbor 10.10.103.101 remote-as
+    65133\n      neighbor 10.10.103.101 description CE3_VLAN103\n      neighbor 10.255.1.105
+    peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n      !\n      address-family
+    ipv4\n         neighbor 10.10.103.101 activate\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+  AVD-FABRIC-_MCI-CTFSTL-BLF03b: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n
+    \  exec /usr/bin/TerminAttr -cvaddr=172.18.102.50:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname MCI-CTFSTL-BLF03b\nip name-server
+    vrf MGMT 8.8.8.8\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree
+    mst 0 priority 4096\n!\nno enable password\nno aaa root\n!\nusername admin privilege
+    15 role network-admin nopassword\nusername ansible privilege 15 role network-admin
+    secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920\n!\nvlan
+    11\n   name VRF10_VLAN11\n!\nvlan 12\n   name VRF10_VLAN12\n!\nvlan 21\n   name
+    VRF11_VLAN21\n!\nvlan 22\n   name VRF11_VLAN22\n!\nvlan 104\n   name Mayday_VLAN\n!\nvlan
+    3009\n   name MLAG_iBGP_VRF10\n   trunk group LEAF_PEER_L3\n!\nvlan 3010\n   name
+    MLAG_iBGP_VRF11\n   trunk group LEAF_PEER_L3\n!\nvlan 3011\n   name MLAG_iBGP_VRFA\n
+    \  trunk group LEAF_PEER_L3\n!\nvlan 4093\n   name LEAF_PEER_L3\n   trunk group
+    LEAF_PEER_L3\n!\nvlan 4094\n   name MLAG_PEER\n   trunk group MLAG\n!\nvrf instance
+    MGMT\n!\nvrf instance VRF10\n!\nvrf instance VRF11\n!\nvrf instance VRFA\n!\ninterface
+    Port-Channel7\n   description ce34\n   no shutdown\n   switchport\n   switchport
+    trunk allowed vlan 10,11,12,21,22,103,104\n   switchport mode trunk\n   mlag 7\n!\ninterface
+    Port-Channel511\n   description MLAG_PEER_MCI-CTFSTL-BLF03a_Po511\n   no shutdown\n
+    \  switchport\n   switchport mode trunk\n   switchport trunk group LEAF_PEER_L3\n
+    \  switchport trunk group MLAG\n!\ninterface Ethernet8\n   description ce34_Ethernet3/6\n
+    \  no shutdown\n   channel-group 7 mode active\n!\ninterface Ethernet49/1\n   description
+    P2P_LINK_TO_MCI-CTFSTL-SP01_Ethernet54/1\n   no shutdown\n   mtu 1500\n   no switchport\n
+    \  ip address 10.255.255.21/31\n!\ninterface Ethernet50/1\n   description P2P_LINK_TO_MCI-CTFSTL-SP02_Ethernet53/1\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.255.23/31\n!\ninterface
+    Ethernet51/1\n   description MLAG_PEER_MCI-CTFSTL-BLF03a_Ethernet51/1\n   no shutdown\n
+    \  channel-group 511 mode active\n!\ninterface Ethernet52/1\n   description MLAG_PEER_MCI-CTFSTL-BLF03a_Ethernet52/1\n
+    \  no shutdown\n   channel-group 511 mode active\n!\ninterface Loopback0\n   description
+    EVPN_Overlay_Peering\n   no shutdown\n   ip address 10.255.0.8/32\n!\ninterface
+    Loopback1\n   description VTEP_VXLAN_Tunnel_Source\n   no shutdown\n   ip address
+    10.255.1.7/32\n!\ninterface Loopback10\n   description VRF10_VTEP_DIAGNOSTICS\n
+    \  no shutdown\n   vrf VRF10\n   ip address 10.255.10.8/32\n!\ninterface Loopback11\n
+    \  description VRF11_VTEP_DIAGNOSTICS\n   no shutdown\n   vrf VRF11\n   ip address
+    10.255.11.8/32\n!\ninterface Loopback12\n   description VRFA_VTEP_DIAGNOSTICS\n
+    \  no shutdown\n   vrf VRFA\n   ip address 10.255.11.8/32\n!\ninterface Management1\n
+    \  description oob_management\n   no shutdown\n   vrf MGMT\n   ip address 172.18.102.27/24\n!\ninterface
+    Vlan11\n   description VRF10_VLAN11\n   no shutdown\n   vrf VRF10\n   ip address
+    virtual 10.10.11.1/24\n!\ninterface Vlan12\n   description VRF10_VLAN12\n   no
+    shutdown\n   vrf VRF10\n   ip address virtual 10.10.12.1/24\n!\ninterface Vlan21\n
+    \  description VRF11_VLAN21\n   no shutdown\n   vrf VRF11\n   ip address virtual
+    10.10.21.1/24\n!\ninterface Vlan22\n   description VRF11_VLAN22\n   no shutdown\n
+    \  vrf VRF11\n   ip address virtual 10.10.22.1/24\n!\ninterface Vlan104\n   description
+    Mayday_VLAN\n   no shutdown\n   vrf VRFA\n   ip address 10.10.104.102/24\n!\ninterface
+    Vlan3009\n   description MLAG_PEER_L3_iBGP: vrf VRF10\n   no shutdown\n   mtu
+    1500\n   vrf VRF10\n   ip address 10.255.1.105/31\n!\ninterface Vlan3010\n   description
+    MLAG_PEER_L3_iBGP: vrf VRF11\n   no shutdown\n   mtu 1500\n   vrf VRF11\n   ip
+    address 10.255.1.105/31\n!\ninterface Vlan3011\n   description MLAG_PEER_L3_iBGP:
+    vrf VRFA\n   no shutdown\n   mtu 1500\n   vrf VRFA\n   ip address 10.255.1.105/31\n!\ninterface
+    Vlan4093\n   description MLAG_PEER_L3_PEERING\n   no shutdown\n   mtu 1500\n   ip
+    address 10.255.1.105/31\n!\ninterface Vlan4094\n   description MLAG_PEER\n   no
+    shutdown\n   mtu 1500\n   no autostate\n   ip address 10.255.1.73/31\n!\ninterface
+    Vxlan1\n   description MCI-CTFSTL-BLF03b_VTEP\n   vxlan source-interface Loopback1\n
+    \  vxlan virtual-router encapsulation mac-address mlag-system-id\n   vxlan udp-port
+    4789\n   vxlan vlan 11 vni 10011\n   vxlan vlan 12 vni 10012\n   vxlan vlan 21
+    vni 10021\n   vxlan vlan 22 vni 10022\n   vxlan vlan 104 vni 10104\n   vxlan vrf
+    VRF10 vni 10\n   vxlan vrf VRF11 vni 11\n   vxlan vrf VRFA vni 12\n!\nip virtual-router
+    mac-address 00:1c:73:00:00:99\n!\nip address virtual source-nat vrf VRF10 address
+    10.255.10.8\nip address virtual source-nat vrf VRF11 address 10.255.11.8\nip address
+    virtual source-nat vrf VRFA address 10.255.11.8\n!\nip routing\nno ip routing
+    vrf MGMT\nip routing vrf VRF10\nip routing vrf VRF11\nip routing vrf VRFA\n!\nip
+    prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 10.255.0.0/27 eq 32\n
+    \  seq 20 permit 10.255.1.0/27 eq 32\n!\nmlag configuration\n   domain-id DC1_L3_BRD\n
+    \  local-interface Vlan4094\n   peer-address 10.255.1.72\n   peer-link Port-Channel511\n
+    \  reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0
+    172.18.102.1\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list
+    PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN permit 10\n   description
+    Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal
+    routing\n   set origin incomplete\n!\nrouter bfd\n   multihop interval 300 min-rx
+    300 multiplier 3\n!\nrouter bgp 65103\n   router-id 10.255.0.8\n   maximum-paths
+    4 ecmp 4\n   no bgp default ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer
+    group\n   neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
+    bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS
+    send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
+    peer group\n   neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER remote-as 65103\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER description MCI-CTFSTL-BLF03a\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes
+    12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor
+    10.255.0.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.255.0.1 remote-as 65100\n
+    \  neighbor 10.255.0.1 description MCI-CTFSTL-SP01\n   neighbor 10.255.0.2 peer
+    group EVPN-OVERLAY-PEERS\n   neighbor 10.255.0.2 remote-as 65100\n   neighbor
+    10.255.0.2 description MCI-CTFSTL-SP02\n   neighbor 10.255.1.104 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \  neighbor 10.255.1.104 description MCI-CTFSTL-BLF03a\n   neighbor 10.255.255.20
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.20 remote-as 65100\n   neighbor
+    10.255.255.20 description MCI-CTFSTL-SP01_Ethernet54/1\n   neighbor 10.255.255.22
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.22 remote-as 65100\n   neighbor
+    10.255.255.22 description MCI-CTFSTL-SP02_Ethernet53/1\n   redistribute connected
+    route-map RM-CONN-2-BGP\n   !\n   vlan 104\n      rd 10.255.0.8:10104\n      route-target
+    both 10104:10104\n      redistribute learned\n   !\n   vlan 11\n      rd 10.255.0.8:10011\n
+    \     route-target both 10011:10011\n      redistribute learned\n   !\n   vlan
+    12\n      rd 10.255.0.8:10012\n      route-target both 10012:10012\n      redistribute
+    learned\n   !\n   vlan 21\n      rd 10.255.0.8:10021\n      route-target both
+    10021:10021\n      redistribute learned\n   !\n   vlan 22\n      rd 10.255.0.8:10022\n
+    \     route-target both 10022:10022\n      redistribute learned\n   !\n   address-family
+    evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n
+    \     no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS
+    activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf VRF10\n
+    \     rd 10.255.0.8:10\n      route-target import evpn 10:10\n      route-target
+    export evpn 10:10\n      router-id 10.255.0.8\n      neighbor 10.255.1.104 peer
+    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf VRF11\n
+    \     rd 10.255.0.8:11\n      route-target import evpn 11:11\n      route-target
+    export evpn 11:11\n      router-id 10.255.0.8\n      neighbor 10.255.1.104 peer
+    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf VRFA\n
+    \     rd 10.255.0.8:12\n      route-target import evpn 12:12\n      route-target
+    export evpn 12:12\n      router-id 10.255.0.8\n      neighbor 10.10.104.101 remote-as
+    65144\n      neighbor 10.10.104.101 description CE4_VLAN104\n      neighbor 10.255.1.104
+    peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n      !\n      address-family
+    ipv4\n         neighbor 10.10.104.101 activate\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+  AVD-FABRIC-_MCI-CTFSTL-LF01a: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n
+    \  exec /usr/bin/TerminAttr -cvaddr=172.18.102.50:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname MCI-CTFSTL-LF01a\nip name-server
+    vrf MGMT 8.8.8.8\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree
+    mst 0 priority 4096\n!\nno enable password\nno aaa root\n!\nusername admin privilege
+    15 role network-admin nopassword\nusername ansible privilege 15 role network-admin
+    secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920\n!\nvlan
+    11\n   name VRF10_VLAN11\n!\nvlan 12\n   name VRF10_VLAN12\n!\nvlan 21\n   name
+    VRF11_VLAN21\n!\nvlan 22\n   name VRF11_VLAN22\n!\nvlan 101\n   name Nadeem_VLAN\n!\nvlan
+    3009\n   name MLAG_iBGP_VRF10\n   trunk group LEAF_PEER_L3\n!\nvlan 3010\n   name
+    MLAG_iBGP_VRF11\n   trunk group LEAF_PEER_L3\n!\nvlan 3011\n   name MLAG_iBGP_VRFA\n
+    \  trunk group LEAF_PEER_L3\n!\nvlan 4093\n   name LEAF_PEER_L3\n   trunk group
+    LEAF_PEER_L3\n!\nvlan 4094\n   name MLAG_PEER\n   trunk group MLAG\n!\nvrf instance
+    MGMT\n!\nvrf instance VRF10\n!\nvrf instance VRF11\n!\nvrf instance VRFA\n!\ninterface
+    Port-Channel20\n   description ce1\n   no shutdown\n   switchport\n   switchport
+    trunk allowed vlan 10,11,12,21,22,101,111\n   switchport mode trunk\n   mlag 20\n!\ninterface
+    Port-Channel511\n   description MLAG_PEER_MCI-CTFSTL-LF01b_Po511\n   no shutdown\n
+    \  switchport\n   switchport mode trunk\n   switchport trunk group LEAF_PEER_L3\n
+    \  switchport trunk group MLAG\n!\ninterface Ethernet20\n   description ce1_Ethernet1\n
+    \  no shutdown\n   channel-group 20 mode active\n!\ninterface Ethernet49/1\n   description
+    P2P_LINK_TO_MCI-CTFSTL-SP01_Ethernet49/1\n   no shutdown\n   mtu 1500\n   no switchport\n
+    \  ip address 10.255.255.1/31\n!\ninterface Ethernet50/1\n   description P2P_LINK_TO_MCI-CTFSTL-SP02_Ethernet49/1\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.255.3/31\n!\ninterface
+    Ethernet51/1\n   description MLAG_PEER_MCI-CTFSTL-LF01b_Ethernet51/1\n   no shutdown\n
+    \  channel-group 511 mode active\n!\ninterface Ethernet52/1\n   description MLAG_PEER_MCI-CTFSTL-LF01b_Ethernet52/1\n
+    \  no shutdown\n   channel-group 511 mode active\n!\ninterface Loopback0\n   description
+    EVPN_Overlay_Peering\n   no shutdown\n   ip address 10.255.0.3/32\n!\ninterface
+    Loopback1\n   description VTEP_VXLAN_Tunnel_Source\n   no shutdown\n   ip address
+    10.255.1.3/32\n!\ninterface Loopback10\n   description VRF10_VTEP_DIAGNOSTICS\n
+    \  no shutdown\n   vrf VRF10\n   ip address 10.255.10.3/32\n!\ninterface Loopback11\n
+    \  description VRF11_VTEP_DIAGNOSTICS\n   no shutdown\n   vrf VRF11\n   ip address
+    10.255.11.3/32\n!\ninterface Loopback12\n   description VRFA_VTEP_DIAGNOSTICS\n
+    \  no shutdown\n   vrf VRFA\n   ip address 10.255.11.3/32\n!\ninterface Management1\n
+    \  description oob_management\n   no shutdown\n   vrf MGMT\n   ip address 172.18.102.22/24\n!\ninterface
+    Vlan11\n   description VRF10_VLAN11\n   no shutdown\n   vrf VRF10\n   ip address
+    virtual 10.10.11.1/24\n!\ninterface Vlan12\n   description VRF10_VLAN12\n   no
+    shutdown\n   vrf VRF10\n   ip address virtual 10.10.12.1/24\n!\ninterface Vlan21\n
+    \  description VRF11_VLAN21\n   no shutdown\n   vrf VRF11\n   ip address virtual
+    10.10.21.1/24\n!\ninterface Vlan22\n   description VRF11_VLAN22\n   no shutdown\n
+    \  vrf VRF11\n   ip address virtual 10.10.22.1/24\n!\ninterface Vlan101\n   description
+    Nadeem_VLAN\n   no shutdown\n   vrf VRFA\n   ip address 10.10.101.102/24\n!\ninterface
+    Vlan3009\n   description MLAG_PEER_L3_iBGP: vrf VRF10\n   no shutdown\n   mtu
+    1500\n   vrf VRF10\n   ip address 10.255.1.96/31\n!\ninterface Vlan3010\n   description
+    MLAG_PEER_L3_iBGP: vrf VRF11\n   no shutdown\n   mtu 1500\n   vrf VRF11\n   ip
+    address 10.255.1.96/31\n!\ninterface Vlan3011\n   description MLAG_PEER_L3_iBGP:
+    vrf VRFA\n   no shutdown\n   mtu 1500\n   vrf VRFA\n   ip address 10.255.1.96/31\n!\ninterface
+    Vlan4093\n   description MLAG_PEER_L3_PEERING\n   no shutdown\n   mtu 1500\n   ip
+    address 10.255.1.96/31\n!\ninterface Vlan4094\n   description MLAG_PEER\n   no
+    shutdown\n   mtu 1500\n   no autostate\n   ip address 10.255.1.64/31\n!\ninterface
+    Vxlan1\n   description MCI-CTFSTL-LF01a_VTEP\n   vxlan source-interface Loopback1\n
+    \  vxlan virtual-router encapsulation mac-address mlag-system-id\n   vxlan udp-port
+    4789\n   vxlan vlan 11 vni 10011\n   vxlan vlan 12 vni 10012\n   vxlan vlan 21
+    vni 10021\n   vxlan vlan 22 vni 10022\n   vxlan vlan 101 vni 10101\n   vxlan vrf
+    VRF10 vni 10\n   vxlan vrf VRF11 vni 11\n   vxlan vrf VRFA vni 12\n!\nip virtual-router
+    mac-address 00:1c:73:00:00:99\n!\nip address virtual source-nat vrf VRF10 address
+    10.255.10.3\nip address virtual source-nat vrf VRF11 address 10.255.11.3\nip address
+    virtual source-nat vrf VRFA address 10.255.11.3\n!\nip routing\nno ip routing
+    vrf MGMT\nip routing vrf VRF10\nip routing vrf VRF11\nip routing vrf VRFA\n!\nip
+    prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 10.255.0.0/27 eq 32\n
+    \  seq 20 permit 10.255.1.0/27 eq 32\n!\nmlag configuration\n   domain-id DC1_L3_LEAF1\n
+    \  local-interface Vlan4094\n   peer-address 10.255.1.65\n   peer-link Port-Channel511\n
+    \  reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0
+    172.18.102.1\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list
+    PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN permit 10\n   description
+    Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal
+    routing\n   set origin incomplete\n!\nrouter bfd\n   multihop interval 300 min-rx
+    300 multiplier 3\n!\nrouter bgp 65101\n   router-id 10.255.0.3\n   maximum-paths
+    4 ecmp 4\n   no bgp default ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer
+    group\n   neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
+    bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS
+    send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
+    peer group\n   neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER remote-as 65101\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER description MCI-CTFSTL-LF01b\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes
+    12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor
+    10.255.0.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.255.0.1 remote-as 65100\n
+    \  neighbor 10.255.0.1 description MCI-CTFSTL-SP01\n   neighbor 10.255.0.2 peer
+    group EVPN-OVERLAY-PEERS\n   neighbor 10.255.0.2 remote-as 65100\n   neighbor
+    10.255.0.2 description MCI-CTFSTL-SP02\n   neighbor 10.255.1.97 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \  neighbor 10.255.1.97 description MCI-CTFSTL-LF01b\n   neighbor 10.255.255.0
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.0 remote-as 65100\n   neighbor
+    10.255.255.0 description MCI-CTFSTL-SP01_Ethernet49/1\n   neighbor 10.255.255.2
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.2 remote-as 65100\n   neighbor
+    10.255.255.2 description MCI-CTFSTL-SP02_Ethernet49/1\n   redistribute connected
+    route-map RM-CONN-2-BGP\n   !\n   vlan 101\n      rd 10.255.0.3:10101\n      route-target
+    both 10101:10101\n      redistribute learned\n   !\n   vlan 11\n      rd 10.255.0.3:10011\n
+    \     route-target both 10011:10011\n      redistribute learned\n   !\n   vlan
+    12\n      rd 10.255.0.3:10012\n      route-target both 10012:10012\n      redistribute
+    learned\n   !\n   vlan 21\n      rd 10.255.0.3:10021\n      route-target both
+    10021:10021\n      redistribute learned\n   !\n   vlan 22\n      rd 10.255.0.3:10022\n
+    \     route-target both 10022:10022\n      redistribute learned\n   !\n   address-family
+    evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n
+    \     no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS
+    activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf VRF10\n
+    \     rd 10.255.0.3:10\n      route-target import evpn 10:10\n      route-target
+    export evpn 10:10\n      router-id 10.255.0.3\n      neighbor 10.255.1.97 peer
+    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf VRF11\n
+    \     rd 10.255.0.3:11\n      route-target import evpn 11:11\n      route-target
+    export evpn 11:11\n      router-id 10.255.0.3\n      neighbor 10.255.1.97 peer
+    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf VRFA\n
+    \     rd 10.255.0.3:12\n      route-target import evpn 12:12\n      route-target
+    export evpn 12:12\n      router-id 10.255.0.3\n      neighbor 10.10.101.101 remote-as
+    65111\n      neighbor 10.10.101.101 description CE1_VLAN101\n      neighbor 10.255.1.97
+    peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n      !\n      address-family
+    ipv4\n         neighbor 10.10.101.101 activate\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+  AVD-FABRIC-_MCI-CTFSTL-LF01b: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n
+    \  exec /usr/bin/TerminAttr -cvaddr=172.18.102.50:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname MCI-CTFSTL-LF01b\nip name-server
+    vrf MGMT 8.8.8.8\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree
+    mst 0 priority 4096\n!\nno enable password\nno aaa root\n!\nusername admin privilege
+    15 role network-admin nopassword\nusername ansible privilege 15 role network-admin
+    secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920\n!\nvlan
+    11\n   name VRF10_VLAN11\n!\nvlan 12\n   name VRF10_VLAN12\n!\nvlan 21\n   name
+    VRF11_VLAN21\n!\nvlan 22\n   name VRF11_VLAN22\n!\nvlan 111\n   name TheDream_VLAN\n!\nvlan
+    3009\n   name MLAG_iBGP_VRF10\n   trunk group LEAF_PEER_L3\n!\nvlan 3010\n   name
+    MLAG_iBGP_VRF11\n   trunk group LEAF_PEER_L3\n!\nvlan 3011\n   name MLAG_iBGP_VRFA\n
+    \  trunk group LEAF_PEER_L3\n!\nvlan 4093\n   name LEAF_PEER_L3\n   trunk group
+    LEAF_PEER_L3\n!\nvlan 4094\n   name MLAG_PEER\n   trunk group MLAG\n!\nvrf instance
+    MGMT\n!\nvrf instance VRF10\n!\nvrf instance VRF11\n!\nvrf instance VRFA\n!\ninterface
+    Port-Channel20\n   description ce1\n   no shutdown\n   switchport\n   switchport
+    trunk allowed vlan 10,11,12,21,22,101,111\n   switchport mode trunk\n   mlag 20\n!\ninterface
+    Port-Channel511\n   description MLAG_PEER_MCI-CTFSTL-LF01a_Po511\n   no shutdown\n
+    \  switchport\n   switchport mode trunk\n   switchport trunk group LEAF_PEER_L3\n
+    \  switchport trunk group MLAG\n!\ninterface Ethernet20\n   description ce1_Ethernet2\n
+    \  no shutdown\n   channel-group 20 mode active\n!\ninterface Ethernet49/1\n   description
+    P2P_LINK_TO_MCI-CTFSTL-SP01_Ethernet50/1\n   no shutdown\n   mtu 1500\n   no switchport\n
+    \  ip address 10.255.255.5/31\n!\ninterface Ethernet50/1\n   description P2P_LINK_TO_MCI-CTFSTL-SP02_Ethernet50/1\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.255.7/31\n!\ninterface
+    Ethernet51/1\n   description MLAG_PEER_MCI-CTFSTL-LF01a_Ethernet51/1\n   no shutdown\n
+    \  channel-group 511 mode active\n!\ninterface Ethernet52/1\n   description MLAG_PEER_MCI-CTFSTL-LF01a_Ethernet52/1\n
+    \  no shutdown\n   channel-group 511 mode active\n!\ninterface Loopback0\n   description
+    EVPN_Overlay_Peering\n   no shutdown\n   ip address 10.255.0.4/32\n!\ninterface
+    Loopback1\n   description VTEP_VXLAN_Tunnel_Source\n   no shutdown\n   ip address
+    10.255.1.3/32\n!\ninterface Loopback10\n   description VRF10_VTEP_DIAGNOSTICS\n
+    \  no shutdown\n   vrf VRF10\n   ip address 10.255.10.4/32\n!\ninterface Loopback11\n
+    \  description VRF11_VTEP_DIAGNOSTICS\n   no shutdown\n   vrf VRF11\n   ip address
+    10.255.11.4/32\n!\ninterface Loopback12\n   description VRFA_VTEP_DIAGNOSTICS\n
+    \  no shutdown\n   vrf VRFA\n   ip address 10.255.11.4/32\n!\ninterface Management1\n
+    \  description oob_management\n   no shutdown\n   vrf MGMT\n   ip address 172.18.102.23/24\n!\ninterface
+    Vlan11\n   description VRF10_VLAN11\n   no shutdown\n   vrf VRF10\n   ip address
+    virtual 10.10.11.1/24\n!\ninterface Vlan12\n   description VRF10_VLAN12\n   no
+    shutdown\n   vrf VRF10\n   ip address virtual 10.10.12.1/24\n!\ninterface Vlan21\n
+    \  description VRF11_VLAN21\n   no shutdown\n   vrf VRF11\n   ip address virtual
+    10.10.21.1/24\n!\ninterface Vlan22\n   description VRF11_VLAN22\n   no shutdown\n
+    \  vrf VRF11\n   ip address virtual 10.10.22.1/24\n!\ninterface Vlan111\n   description
+    TheDream_VLAN\n   no shutdown\n   vrf VRFA\n   ip address 10.10.111.102/24\n!\ninterface
+    Vlan3009\n   description MLAG_PEER_L3_iBGP: vrf VRF10\n   no shutdown\n   mtu
+    1500\n   vrf VRF10\n   ip address 10.255.1.97/31\n!\ninterface Vlan3010\n   description
+    MLAG_PEER_L3_iBGP: vrf VRF11\n   no shutdown\n   mtu 1500\n   vrf VRF11\n   ip
+    address 10.255.1.97/31\n!\ninterface Vlan3011\n   description MLAG_PEER_L3_iBGP:
+    vrf VRFA\n   no shutdown\n   mtu 1500\n   vrf VRFA\n   ip address 10.255.1.97/31\n!\ninterface
+    Vlan4093\n   description MLAG_PEER_L3_PEERING\n   no shutdown\n   mtu 1500\n   ip
+    address 10.255.1.97/31\n!\ninterface Vlan4094\n   description MLAG_PEER\n   no
+    shutdown\n   mtu 1500\n   no autostate\n   ip address 10.255.1.65/31\n!\ninterface
+    Vxlan1\n   description MCI-CTFSTL-LF01b_VTEP\n   vxlan source-interface Loopback1\n
+    \  vxlan virtual-router encapsulation mac-address mlag-system-id\n   vxlan udp-port
+    4789\n   vxlan vlan 11 vni 10011\n   vxlan vlan 12 vni 10012\n   vxlan vlan 21
+    vni 10021\n   vxlan vlan 22 vni 10022\n   vxlan vlan 111 vni 10111\n   vxlan vrf
+    VRF10 vni 10\n   vxlan vrf VRF11 vni 11\n   vxlan vrf VRFA vni 12\n!\nip virtual-router
+    mac-address 00:1c:73:00:00:99\n!\nip address virtual source-nat vrf VRF10 address
+    10.255.10.4\nip address virtual source-nat vrf VRF11 address 10.255.11.4\nip address
+    virtual source-nat vrf VRFA address 10.255.11.4\n!\nip routing\nno ip routing
+    vrf MGMT\nip routing vrf VRF10\nip routing vrf VRF11\nip routing vrf VRFA\n!\nip
+    prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 10.255.0.0/27 eq 32\n
+    \  seq 20 permit 10.255.1.0/27 eq 32\n!\nmlag configuration\n   domain-id DC1_L3_LEAF1\n
+    \  local-interface Vlan4094\n   peer-address 10.255.1.64\n   peer-link Port-Channel511\n
+    \  reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0
+    172.18.102.1\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list
+    PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN permit 10\n   description
+    Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal
+    routing\n   set origin incomplete\n!\nrouter bfd\n   multihop interval 300 min-rx
+    300 multiplier 3\n!\nrouter bgp 65101\n   router-id 10.255.0.4\n   maximum-paths
+    4 ecmp 4\n   no bgp default ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer
+    group\n   neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
+    bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS
+    send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
+    peer group\n   neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER remote-as 65101\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER description MCI-CTFSTL-LF01a\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes
+    12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor
+    10.255.0.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.255.0.1 remote-as 65100\n
+    \  neighbor 10.255.0.1 description MCI-CTFSTL-SP01\n   neighbor 10.255.0.2 peer
+    group EVPN-OVERLAY-PEERS\n   neighbor 10.255.0.2 remote-as 65100\n   neighbor
+    10.255.0.2 description MCI-CTFSTL-SP02\n   neighbor 10.255.1.96 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \  neighbor 10.255.1.96 description MCI-CTFSTL-LF01a\n   neighbor 10.255.255.4
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.4 remote-as 65100\n   neighbor
+    10.255.255.4 description MCI-CTFSTL-SP01_Ethernet50/1\n   neighbor 10.255.255.6
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.6 remote-as 65100\n   neighbor
+    10.255.255.6 description MCI-CTFSTL-SP02_Ethernet50/1\n   redistribute connected
+    route-map RM-CONN-2-BGP\n   !\n   vlan 11\n      rd 10.255.0.4:10011\n      route-target
+    both 10011:10011\n      redistribute learned\n   !\n   vlan 111\n      rd 10.255.0.4:10111\n
+    \     route-target both 10111:10111\n      redistribute learned\n   !\n   vlan
+    12\n      rd 10.255.0.4:10012\n      route-target both 10012:10012\n      redistribute
+    learned\n   !\n   vlan 21\n      rd 10.255.0.4:10021\n      route-target both
+    10021:10021\n      redistribute learned\n   !\n   vlan 22\n      rd 10.255.0.4:10022\n
+    \     route-target both 10022:10022\n      redistribute learned\n   !\n   address-family
+    evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n
+    \     no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS
+    activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf VRF10\n
+    \     rd 10.255.0.4:10\n      route-target import evpn 10:10\n      route-target
+    export evpn 10:10\n      router-id 10.255.0.4\n      neighbor 10.255.1.96 peer
+    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf VRF11\n
+    \     rd 10.255.0.4:11\n      route-target import evpn 11:11\n      route-target
+    export evpn 11:11\n      router-id 10.255.0.4\n      neighbor 10.255.1.96 peer
+    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf VRFA\n
+    \     rd 10.255.0.4:12\n      route-target import evpn 12:12\n      route-target
+    export evpn 12:12\n      router-id 10.255.0.4\n      neighbor 10.10.111.101 remote-as
+    65111\n      neighbor 10.10.111.101 description CE1_VLAN111\n      neighbor 10.255.1.96
+    peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n      !\n      address-family
+    ipv4\n         neighbor 10.10.111.101 activate\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+  AVD-FABRIC-_MCI-CTFSTL-LF02a: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n
+    \  exec /usr/bin/TerminAttr -cvaddr=172.18.102.50:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname MCI-CTFSTL-LF02a\nip name-server
+    vrf MGMT 8.8.8.8\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree
+    mst 0 priority 4096\n!\nno enable password\nno aaa root\n!\nusername admin privilege
+    15 role network-admin nopassword\nusername ansible privilege 15 role network-admin
+    secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920\n!\nvlan
+    11\n   name VRF10_VLAN11\n!\nvlan 12\n   name VRF10_VLAN12\n!\nvlan 21\n   name
+    VRF11_VLAN21\n!\nvlan 22\n   name VRF11_VLAN22\n!\nvlan 102\n   name Joe_VLAN\n!\nvlan
+    3009\n   name MLAG_iBGP_VRF10\n   trunk group LEAF_PEER_L3\n!\nvlan 3010\n   name
+    MLAG_iBGP_VRF11\n   trunk group LEAF_PEER_L3\n!\nvlan 3011\n   name MLAG_iBGP_VRFA\n
+    \  trunk group LEAF_PEER_L3\n!\nvlan 4093\n   name LEAF_PEER_L3\n   trunk group
+    LEAF_PEER_L3\n!\nvlan 4094\n   name MLAG_PEER\n   trunk group MLAG\n!\nvrf instance
+    MGMT\n!\nvrf instance VRF10\n!\nvrf instance VRF11\n!\nvrf instance VRFA\n!\ninterface
+    Port-Channel20\n   description ce2\n   no shutdown\n   switchport\n   switchport
+    trunk allowed vlan 10,11,12,21,22,102,122\n   switchport mode trunk\n   mlag 20\n!\ninterface
+    Port-Channel511\n   description MLAG_PEER_MCI-CTFSTL-LF02b_Po511\n   no shutdown\n
+    \  switchport\n   switchport mode trunk\n   switchport trunk group LEAF_PEER_L3\n
+    \  switchport trunk group MLAG\n!\ninterface Ethernet20\n   description ce2_Ethernet1\n
+    \  no shutdown\n   channel-group 20 mode active\n!\ninterface Ethernet49/1\n   description
+    P2P_LINK_TO_MCI-CTFSTL-SP01_Ethernet51/1\n   no shutdown\n   mtu 1500\n   no switchport\n
+    \  ip address 10.255.255.9/31\n!\ninterface Ethernet50/1\n   description P2P_LINK_TO_MCI-CTFSTL-SP02_Ethernet51/1\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.255.11/31\n!\ninterface
+    Ethernet51/1\n   description MLAG_PEER_MCI-CTFSTL-LF02b_Ethernet51/1\n   no shutdown\n
+    \  channel-group 511 mode active\n!\ninterface Ethernet52/1\n   description MLAG_PEER_MCI-CTFSTL-LF02b_Ethernet52/1\n
+    \  no shutdown\n   channel-group 511 mode active\n!\ninterface Loopback0\n   description
+    EVPN_Overlay_Peering\n   no shutdown\n   ip address 10.255.0.5/32\n!\ninterface
+    Loopback1\n   description VTEP_VXLAN_Tunnel_Source\n   no shutdown\n   ip address
+    10.255.1.5/32\n!\ninterface Loopback10\n   description VRF10_VTEP_DIAGNOSTICS\n
+    \  no shutdown\n   vrf VRF10\n   ip address 10.255.10.5/32\n!\ninterface Loopback11\n
+    \  description VRF11_VTEP_DIAGNOSTICS\n   no shutdown\n   vrf VRF11\n   ip address
+    10.255.11.5/32\n!\ninterface Loopback12\n   description VRFA_VTEP_DIAGNOSTICS\n
+    \  no shutdown\n   vrf VRFA\n   ip address 10.255.11.5/32\n!\ninterface Management1\n
+    \  description oob_management\n   no shutdown\n   vrf MGMT\n   ip address 172.18.102.24/24\n!\ninterface
+    Vlan11\n   description VRF10_VLAN11\n   no shutdown\n   vrf VRF10\n   ip address
+    virtual 10.10.11.1/24\n!\ninterface Vlan12\n   description VRF10_VLAN12\n   no
+    shutdown\n   vrf VRF10\n   ip address virtual 10.10.12.1/24\n!\ninterface Vlan21\n
+    \  description VRF11_VLAN21\n   no shutdown\n   vrf VRF11\n   ip address virtual
+    10.10.21.1/24\n!\ninterface Vlan22\n   description VRF11_VLAN22\n   no shutdown\n
+    \  vrf VRF11\n   ip address virtual 10.10.22.1/24\n!\ninterface Vlan102\n   description
+    Joe_VLAN\n   no shutdown\n   vrf VRFA\n   ip address 10.10.102.102/24\n!\ninterface
+    Vlan3009\n   description MLAG_PEER_L3_iBGP: vrf VRF10\n   no shutdown\n   mtu
+    1500\n   vrf VRF10\n   ip address 10.255.1.100/31\n!\ninterface Vlan3010\n   description
+    MLAG_PEER_L3_iBGP: vrf VRF11\n   no shutdown\n   mtu 1500\n   vrf VRF11\n   ip
+    address 10.255.1.100/31\n!\ninterface Vlan3011\n   description MLAG_PEER_L3_iBGP:
+    vrf VRFA\n   no shutdown\n   mtu 1500\n   vrf VRFA\n   ip address 10.255.1.100/31\n!\ninterface
+    Vlan4093\n   description MLAG_PEER_L3_PEERING\n   no shutdown\n   mtu 1500\n   ip
+    address 10.255.1.100/31\n!\ninterface Vlan4094\n   description MLAG_PEER\n   no
+    shutdown\n   mtu 1500\n   no autostate\n   ip address 10.255.1.68/31\n!\ninterface
+    Vxlan1\n   description MCI-CTFSTL-LF02a_VTEP\n   vxlan source-interface Loopback1\n
+    \  vxlan virtual-router encapsulation mac-address mlag-system-id\n   vxlan udp-port
+    4789\n   vxlan vlan 11 vni 10011\n   vxlan vlan 12 vni 10012\n   vxlan vlan 21
+    vni 10021\n   vxlan vlan 22 vni 10022\n   vxlan vlan 102 vni 10102\n   vxlan vrf
+    VRF10 vni 10\n   vxlan vrf VRF11 vni 11\n   vxlan vrf VRFA vni 12\n!\nip virtual-router
+    mac-address 00:1c:73:00:00:99\n!\nip address virtual source-nat vrf VRF10 address
+    10.255.10.5\nip address virtual source-nat vrf VRF11 address 10.255.11.5\nip address
+    virtual source-nat vrf VRFA address 10.255.11.5\n!\nip routing\nno ip routing
+    vrf MGMT\nip routing vrf VRF10\nip routing vrf VRF11\nip routing vrf VRFA\n!\nip
+    prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 10.255.0.0/27 eq 32\n
+    \  seq 20 permit 10.255.1.0/27 eq 32\n!\nmlag configuration\n   domain-id DC1_L3_LEAF2\n
+    \  local-interface Vlan4094\n   peer-address 10.255.1.69\n   peer-link Port-Channel511\n
+    \  reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0
+    172.18.102.1\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list
+    PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN permit 10\n   description
+    Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal
+    routing\n   set origin incomplete\n!\nrouter bfd\n   multihop interval 300 min-rx
+    300 multiplier 3\n!\nrouter bgp 65102\n   router-id 10.255.0.5\n   maximum-paths
+    4 ecmp 4\n   no bgp default ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer
+    group\n   neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
+    bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS
+    send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
+    peer group\n   neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER remote-as 65102\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER description MCI-CTFSTL-LF02b\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes
+    12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor
+    10.255.0.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.255.0.1 remote-as 65100\n
+    \  neighbor 10.255.0.1 description MCI-CTFSTL-SP01\n   neighbor 10.255.0.2 peer
+    group EVPN-OVERLAY-PEERS\n   neighbor 10.255.0.2 remote-as 65100\n   neighbor
+    10.255.0.2 description MCI-CTFSTL-SP02\n   neighbor 10.255.1.101 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \  neighbor 10.255.1.101 description MCI-CTFSTL-LF02b\n   neighbor 10.255.255.8
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.8 remote-as 65100\n   neighbor
+    10.255.255.8 description MCI-CTFSTL-SP01_Ethernet51/1\n   neighbor 10.255.255.10
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.10 remote-as 65100\n   neighbor
+    10.255.255.10 description MCI-CTFSTL-SP02_Ethernet51/1\n   redistribute connected
+    route-map RM-CONN-2-BGP\n   !\n   vlan 102\n      rd 10.255.0.5:10102\n      route-target
+    both 10102:10102\n      redistribute learned\n   !\n   vlan 11\n      rd 10.255.0.5:10011\n
+    \     route-target both 10011:10011\n      redistribute learned\n   !\n   vlan
+    12\n      rd 10.255.0.5:10012\n      route-target both 10012:10012\n      redistribute
+    learned\n   !\n   vlan 21\n      rd 10.255.0.5:10021\n      route-target both
+    10021:10021\n      redistribute learned\n   !\n   vlan 22\n      rd 10.255.0.5:10022\n
+    \     route-target both 10022:10022\n      redistribute learned\n   !\n   address-family
+    evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n
+    \     no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS
+    activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf VRF10\n
+    \     rd 10.255.0.5:10\n      route-target import evpn 10:10\n      route-target
+    export evpn 10:10\n      router-id 10.255.0.5\n      neighbor 10.255.1.101 peer
+    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf VRF11\n
+    \     rd 10.255.0.5:11\n      route-target import evpn 11:11\n      route-target
+    export evpn 11:11\n      router-id 10.255.0.5\n      neighbor 10.255.1.101 peer
+    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf VRFA\n
+    \     rd 10.255.0.5:12\n      route-target import evpn 12:12\n      route-target
+    export evpn 12:12\n      router-id 10.255.0.5\n      neighbor 10.10.102.101 remote-as
+    65122\n      neighbor 10.10.102.101 description CE2_VLAN102\n      neighbor 10.255.1.101
+    peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n      !\n      address-family
+    ipv4\n         neighbor 10.10.102.101 activate\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+  AVD-FABRIC-_MCI-CTFSTL-LF02b: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n
+    \  exec /usr/bin/TerminAttr -cvaddr=172.18.102.50:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname MCI-CTFSTL-LF02b\nip name-server
+    vrf MGMT 8.8.8.8\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree
+    mst 0 priority 4096\n!\nno enable password\nno aaa root\n!\nusername admin privilege
+    15 role network-admin nopassword\nusername ansible privilege 15 role network-admin
+    secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920\n!\nvlan
+    11\n   name VRF10_VLAN11\n!\nvlan 12\n   name VRF10_VLAN12\n!\nvlan 21\n   name
+    VRF11_VLAN21\n!\nvlan 22\n   name VRF11_VLAN22\n!\nvlan 122\n   name Shmo_VLAN\n!\nvlan
+    3009\n   name MLAG_iBGP_VRF10\n   trunk group LEAF_PEER_L3\n!\nvlan 3010\n   name
+    MLAG_iBGP_VRF11\n   trunk group LEAF_PEER_L3\n!\nvlan 3011\n   name MLAG_iBGP_VRFA\n
+    \  trunk group LEAF_PEER_L3\n!\nvlan 4093\n   name LEAF_PEER_L3\n   trunk group
+    LEAF_PEER_L3\n!\nvlan 4094\n   name MLAG_PEER\n   trunk group MLAG\n!\nvrf instance
+    MGMT\n!\nvrf instance VRF10\n!\nvrf instance VRF11\n!\nvrf instance VRFA\n!\ninterface
+    Port-Channel20\n   description ce2\n   no shutdown\n   switchport\n   switchport
+    trunk allowed vlan 10,11,12,21,22,102,122\n   switchport mode trunk\n   mlag 20\n!\ninterface
+    Port-Channel511\n   description MLAG_PEER_MCI-CTFSTL-LF02a_Po511\n   no shutdown\n
+    \  switchport\n   switchport mode trunk\n   switchport trunk group LEAF_PEER_L3\n
+    \  switchport trunk group MLAG\n!\ninterface Ethernet20\n   description ce2_Ethernet2\n
+    \  no shutdown\n   channel-group 20 mode active\n!\ninterface Ethernet49/1\n   description
+    P2P_LINK_TO_MCI-CTFSTL-SP01_Ethernet52/1\n   no shutdown\n   mtu 1500\n   no switchport\n
+    \  ip address 10.255.255.13/31\n!\ninterface Ethernet50/1\n   description P2P_LINK_TO_MCI-CTFSTL-SP02_Ethernet52/1\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.255.15/31\n!\ninterface
+    Ethernet51/1\n   description MLAG_PEER_MCI-CTFSTL-LF02a_Ethernet51/1\n   no shutdown\n
+    \  channel-group 511 mode active\n!\ninterface Ethernet52/1\n   description MLAG_PEER_MCI-CTFSTL-LF02a_Ethernet52/1\n
+    \  no shutdown\n   channel-group 511 mode active\n!\ninterface Loopback0\n   description
+    EVPN_Overlay_Peering\n   no shutdown\n   ip address 10.255.0.6/32\n!\ninterface
+    Loopback1\n   description VTEP_VXLAN_Tunnel_Source\n   no shutdown\n   ip address
+    10.255.1.5/32\n!\ninterface Loopback10\n   description VRF10_VTEP_DIAGNOSTICS\n
+    \  no shutdown\n   vrf VRF10\n   ip address 10.255.10.6/32\n!\ninterface Loopback11\n
+    \  description VRF11_VTEP_DIAGNOSTICS\n   no shutdown\n   vrf VRF11\n   ip address
+    10.255.11.6/32\n!\ninterface Loopback12\n   description VRFA_VTEP_DIAGNOSTICS\n
+    \  no shutdown\n   vrf VRFA\n   ip address 10.255.11.6/32\n!\ninterface Management1\n
+    \  description oob_management\n   no shutdown\n   vrf MGMT\n   ip address 172.18.102.25/24\n!\ninterface
+    Vlan11\n   description VRF10_VLAN11\n   no shutdown\n   vrf VRF10\n   ip address
+    virtual 10.10.11.1/24\n!\ninterface Vlan12\n   description VRF10_VLAN12\n   no
+    shutdown\n   vrf VRF10\n   ip address virtual 10.10.12.1/24\n!\ninterface Vlan21\n
+    \  description VRF11_VLAN21\n   no shutdown\n   vrf VRF11\n   ip address virtual
+    10.10.21.1/24\n!\ninterface Vlan22\n   description VRF11_VLAN22\n   no shutdown\n
+    \  vrf VRF11\n   ip address virtual 10.10.22.1/24\n!\ninterface Vlan122\n   description
+    Shmo_VLAN\n   no shutdown\n   vrf VRFA\n   ip address 10.10.122.102/24\n!\ninterface
+    Vlan3009\n   description MLAG_PEER_L3_iBGP: vrf VRF10\n   no shutdown\n   mtu
+    1500\n   vrf VRF10\n   ip address 10.255.1.101/31\n!\ninterface Vlan3010\n   description
+    MLAG_PEER_L3_iBGP: vrf VRF11\n   no shutdown\n   mtu 1500\n   vrf VRF11\n   ip
+    address 10.255.1.101/31\n!\ninterface Vlan3011\n   description MLAG_PEER_L3_iBGP:
+    vrf VRFA\n   no shutdown\n   mtu 1500\n   vrf VRFA\n   ip address 10.255.1.101/31\n!\ninterface
+    Vlan4093\n   description MLAG_PEER_L3_PEERING\n   no shutdown\n   mtu 1500\n   ip
+    address 10.255.1.101/31\n!\ninterface Vlan4094\n   description MLAG_PEER\n   no
+    shutdown\n   mtu 1500\n   no autostate\n   ip address 10.255.1.69/31\n!\ninterface
+    Vxlan1\n   description MCI-CTFSTL-LF02b_VTEP\n   vxlan source-interface Loopback1\n
+    \  vxlan virtual-router encapsulation mac-address mlag-system-id\n   vxlan udp-port
+    4789\n   vxlan vlan 11 vni 10011\n   vxlan vlan 12 vni 10012\n   vxlan vlan 21
+    vni 10021\n   vxlan vlan 22 vni 10022\n   vxlan vlan 122 vni 10122\n   vxlan vrf
+    VRF10 vni 10\n   vxlan vrf VRF11 vni 11\n   vxlan vrf VRFA vni 12\n!\nip virtual-router
+    mac-address 00:1c:73:00:00:99\n!\nip address virtual source-nat vrf VRF10 address
+    10.255.10.6\nip address virtual source-nat vrf VRF11 address 10.255.11.6\nip address
+    virtual source-nat vrf VRFA address 10.255.11.6\n!\nip routing\nno ip routing
+    vrf MGMT\nip routing vrf VRF10\nip routing vrf VRF11\nip routing vrf VRFA\n!\nip
+    prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 10.255.0.0/27 eq 32\n
+    \  seq 20 permit 10.255.1.0/27 eq 32\n!\nmlag configuration\n   domain-id DC1_L3_LEAF2\n
+    \  local-interface Vlan4094\n   peer-address 10.255.1.68\n   peer-link Port-Channel511\n
+    \  reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0
+    172.18.102.1\n!\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list
+    PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN permit 10\n   description
+    Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal
+    routing\n   set origin incomplete\n!\nrouter bfd\n   multihop interval 300 min-rx
+    300 multiplier 3\n!\nrouter bgp 65102\n   router-id 10.255.0.6\n   maximum-paths
+    4 ecmp 4\n   no bgp default ipv4-unicast\n   neighbor EVPN-OVERLAY-PEERS peer
+    group\n   neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
+    bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS
+    send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
+    peer group\n   neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER remote-as 65102\n   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self\n
+    \  neighbor MLAG-IPv4-UNDERLAY-PEER description MCI-CTFSTL-LF02a\n   neighbor
+    MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes
+    12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in\n   neighbor
+    10.255.0.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.255.0.1 remote-as 65100\n
+    \  neighbor 10.255.0.1 description MCI-CTFSTL-SP01\n   neighbor 10.255.0.2 peer
+    group EVPN-OVERLAY-PEERS\n   neighbor 10.255.0.2 remote-as 65100\n   neighbor
+    10.255.0.2 description MCI-CTFSTL-SP02\n   neighbor 10.255.1.100 peer group MLAG-IPv4-UNDERLAY-PEER\n
+    \  neighbor 10.255.1.100 description MCI-CTFSTL-LF02a\n   neighbor 10.255.255.12
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.12 remote-as 65100\n   neighbor
+    10.255.255.12 description MCI-CTFSTL-SP01_Ethernet52/1\n   neighbor 10.255.255.14
+    peer group IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.14 remote-as 65100\n   neighbor
+    10.255.255.14 description MCI-CTFSTL-SP02_Ethernet52/1\n   redistribute connected
+    route-map RM-CONN-2-BGP\n   !\n   vlan 11\n      rd 10.255.0.6:10011\n      route-target
+    both 10011:10011\n      redistribute learned\n   !\n   vlan 12\n      rd 10.255.0.6:10012\n
+    \     route-target both 10012:10012\n      redistribute learned\n   !\n   vlan
+    122\n      rd 10.255.0.6:10122\n      route-target both 10122:10122\n      redistribute
+    learned\n   !\n   vlan 21\n      rd 10.255.0.6:10021\n      route-target both
+    10021:10021\n      redistribute learned\n   !\n   vlan 22\n      rd 10.255.0.6:10022\n
+    \     route-target both 10022:10022\n      redistribute learned\n   !\n   address-family
+    evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n
+    \     no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS
+    activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf VRF10\n
+    \     rd 10.255.0.6:10\n      route-target import evpn 10:10\n      route-target
+    export evpn 10:10\n      router-id 10.255.0.6\n      neighbor 10.255.1.100 peer
+    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf VRF11\n
+    \     rd 10.255.0.6:11\n      route-target import evpn 11:11\n      route-target
+    export evpn 11:11\n      router-id 10.255.0.6\n      neighbor 10.255.1.100 peer
+    group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf VRFA\n
+    \     rd 10.255.0.6:12\n      route-target import evpn 12:12\n      route-target
+    export evpn 12:12\n      router-id 10.255.0.6\n      neighbor 10.10.122.101 remote-as
+    65122\n      neighbor 10.10.122.101 description CE2_VLAN122\n      neighbor 10.255.1.100
+    peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n      !\n      address-family
+    ipv4\n         neighbor 10.10.122.101 activate\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+  AVD-FABRIC-_MCI-CTFSTL-SP01: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n
+    \  exec /usr/bin/TerminAttr -cvaddr=172.18.102.50:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname MCI-CTFSTL-SP01\nip name-server
+    vrf MGMT 8.8.8.8\n!\nspanning-tree mode none\n!\nno enable password\nno aaa root\n!\nusername
+    admin privilege 15 role network-admin nopassword\nusername ansible privilege 15
+    role network-admin secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920\n!\nvrf
+    instance MGMT\n!\ninterface Ethernet49/1\n   description P2P_LINK_TO_MCI-CTFSTL-LF01A_Ethernet49/1\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.255.0/31\n!\ninterface
+    Ethernet50/1\n   description P2P_LINK_TO_MCI-CTFSTL-LF01B_Ethernet49/1\n   no
+    shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.255.4/31\n!\ninterface
+    Ethernet51/1\n   description P2P_LINK_TO_MCI-CTFSTL-LF02A_Ethernet49/1\n   no
+    shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.255.8/31\n!\ninterface
+    Ethernet52/1\n   description P2P_LINK_TO_MCI-CTFSTL-LF02B_Ethernet49/1\n   no
+    shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.255.12/31\n!\ninterface
+    Ethernet53/1\n   description P2P_LINK_TO_MCI-CTFSTL-BLF03A_Ethernet49/1\n   no
+    shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.255.16/31\n!\ninterface
+    Ethernet54/1\n   description P2P_LINK_TO_MCI-CTFSTL-BLF03B_Ethernet49/1\n   no
+    shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.255.20/31\n!\ninterface
+    Loopback0\n   description EVPN_Overlay_Peering\n   no shutdown\n   ip address
+    10.255.0.1/32\n!\ninterface Management1\n   description oob_management\n   no
+    shutdown\n   vrf MGMT\n   ip address 172.18.102.20/24\n!\nip routing\nno ip routing
+    vrf MGMT\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 10.255.0.0/27
+    eq 32\n!\nip route vrf MGMT 0.0.0.0/0 172.18.102.1\n!\nroute-map RM-CONN-2-BGP
+    permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nrouter
+    bfd\n   multihop interval 300 min-rx 300 multiplier 3\n!\nrouter bgp 65100\n   router-id
+    10.255.0.1\n   maximum-paths 4 ecmp 4\n   no bgp default ipv4-unicast\n   neighbor
+    EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged\n
+    \  neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
+    bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS
+    send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
+    peer group\n   neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor 10.255.0.3 peer group EVPN-OVERLAY-PEERS\n   neighbor
+    10.255.0.3 remote-as 65101\n   neighbor 10.255.0.3 description MCI-CTFSTL-LF01a\n
+    \  neighbor 10.255.0.4 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.255.0.4 remote-as
+    65101\n   neighbor 10.255.0.4 description MCI-CTFSTL-LF01b\n   neighbor 10.255.0.5
+    peer group EVPN-OVERLAY-PEERS\n   neighbor 10.255.0.5 remote-as 65102\n   neighbor
+    10.255.0.5 description MCI-CTFSTL-LF02a\n   neighbor 10.255.0.6 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.255.0.6 remote-as 65102\n   neighbor 10.255.0.6 description MCI-CTFSTL-LF02b\n
+    \  neighbor 10.255.0.7 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.255.0.7 remote-as
+    65103\n   neighbor 10.255.0.7 description MCI-CTFSTL-BLF03a\n   neighbor 10.255.0.8
+    peer group EVPN-OVERLAY-PEERS\n   neighbor 10.255.0.8 remote-as 65103\n   neighbor
+    10.255.0.8 description MCI-CTFSTL-BLF03b\n   neighbor 10.255.255.1 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.1 remote-as 65101\n   neighbor 10.255.255.1
+    description MCI-CTFSTL-LF01a_Ethernet49/1\n   neighbor 10.255.255.5 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.5 remote-as 65101\n   neighbor 10.255.255.5
+    description MCI-CTFSTL-LF01b_Ethernet49/1\n   neighbor 10.255.255.9 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.9 remote-as 65102\n   neighbor 10.255.255.9
+    description MCI-CTFSTL-LF02a_Ethernet49/1\n   neighbor 10.255.255.13 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.13 remote-as 65102\n   neighbor 10.255.255.13
+    description MCI-CTFSTL-LF02b_Ethernet49/1\n   neighbor 10.255.255.17 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.17 remote-as 65103\n   neighbor 10.255.255.17
+    description MCI-CTFSTL-BLF03a_Ethernet49/1\n   neighbor 10.255.255.21 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.21 remote-as 65103\n   neighbor 10.255.255.21
+    description MCI-CTFSTL-BLF03b_Ethernet49/1\n   redistribute connected route-map
+    RM-CONN-2-BGP\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS
+    activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+  AVD-FABRIC-_MCI-CTFSTL-SP02: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n
+    \  exec /usr/bin/TerminAttr -cvaddr=172.18.102.50:9910 -cvauth=token,/tmp/token
+    -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata
+    -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n!\nvlan
+    internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice
+    routing protocols model multi-agent\n!\nhostname MCI-CTFSTL-SP02\nip name-server
+    vrf MGMT 8.8.8.8\n!\nspanning-tree mode none\n!\nno enable password\nno aaa root\n!\nusername
+    admin privilege 15 role network-admin nopassword\nusername ansible privilege 15
+    role network-admin secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920\n!\nvrf
+    instance MGMT\n!\ninterface Ethernet49/1\n   description P2P_LINK_TO_MCI-CTFSTL-LF01A_Ethernet50/1\n
+    \  no shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.255.2/31\n!\ninterface
+    Ethernet50/1\n   description P2P_LINK_TO_MCI-CTFSTL-LF01B_Ethernet50/1\n   no
+    shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.255.6/31\n!\ninterface
+    Ethernet51/1\n   description P2P_LINK_TO_MCI-CTFSTL-LF02A_Ethernet50/1\n   no
+    shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.255.10/31\n!\ninterface
+    Ethernet52/1\n   description P2P_LINK_TO_MCI-CTFSTL-LF02B_Ethernet50/1\n   no
+    shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.255.14/31\n!\ninterface
+    Ethernet53/1\n   description P2P_LINK_TO_MCI-CTFSTL-BLF03B_Ethernet50/1\n   no
+    shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.255.22/31\n!\ninterface
+    Ethernet54/1\n   description P2P_LINK_TO_MCI-CTFSTL-BLF03A_Ethernet50/1\n   no
+    shutdown\n   mtu 1500\n   no switchport\n   ip address 10.255.255.18/31\n!\ninterface
+    Loopback0\n   description EVPN_Overlay_Peering\n   no shutdown\n   ip address
+    10.255.0.2/32\n!\ninterface Management1\n   description oob_management\n   no
+    shutdown\n   vrf MGMT\n   ip address 172.18.102.21/24\n!\nip routing\nno ip routing
+    vrf MGMT\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 10.255.0.0/27
+    eq 32\n!\nip route vrf MGMT 0.0.0.0/0 172.18.102.1\n!\nroute-map RM-CONN-2-BGP
+    permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nrouter
+    bfd\n   multihop interval 300 min-rx 300 multiplier 3\n!\nrouter bgp 65100\n   router-id
+    10.255.0.2\n   maximum-paths 4 ecmp 4\n   no bgp default ipv4-unicast\n   neighbor
+    EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged\n
+    \  neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS
+    bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS
+    send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS
+    peer group\n   neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS
+    maximum-routes 12000\n   neighbor 10.255.0.3 peer group EVPN-OVERLAY-PEERS\n   neighbor
+    10.255.0.3 remote-as 65101\n   neighbor 10.255.0.3 description MCI-CTFSTL-LF01a\n
+    \  neighbor 10.255.0.4 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.255.0.4 remote-as
+    65101\n   neighbor 10.255.0.4 description MCI-CTFSTL-LF01b\n   neighbor 10.255.0.5
+    peer group EVPN-OVERLAY-PEERS\n   neighbor 10.255.0.5 remote-as 65102\n   neighbor
+    10.255.0.5 description MCI-CTFSTL-LF02a\n   neighbor 10.255.0.6 peer group EVPN-OVERLAY-PEERS\n
+    \  neighbor 10.255.0.6 remote-as 65102\n   neighbor 10.255.0.6 description MCI-CTFSTL-LF02b\n
+    \  neighbor 10.255.0.7 peer group EVPN-OVERLAY-PEERS\n   neighbor 10.255.0.7 remote-as
+    65103\n   neighbor 10.255.0.7 description MCI-CTFSTL-BLF03a\n   neighbor 10.255.0.8
+    peer group EVPN-OVERLAY-PEERS\n   neighbor 10.255.0.8 remote-as 65103\n   neighbor
+    10.255.0.8 description MCI-CTFSTL-BLF03b\n   neighbor 10.255.255.3 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.3 remote-as 65101\n   neighbor 10.255.255.3
+    description MCI-CTFSTL-LF01a_Ethernet50/1\n   neighbor 10.255.255.7 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.7 remote-as 65101\n   neighbor 10.255.255.7
+    description MCI-CTFSTL-LF01b_Ethernet50/1\n   neighbor 10.255.255.11 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.11 remote-as 65102\n   neighbor 10.255.255.11
+    description MCI-CTFSTL-LF02a_Ethernet50/1\n   neighbor 10.255.255.15 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.15 remote-as 65102\n   neighbor 10.255.255.15
+    description MCI-CTFSTL-LF02b_Ethernet50/1\n   neighbor 10.255.255.19 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.19 remote-as 65103\n   neighbor 10.255.255.19
+    description MCI-CTFSTL-BLF03a_Ethernet50/1\n   neighbor 10.255.255.23 peer group
+    IPv4-UNDERLAY-PEERS\n   neighbor 10.255.255.23 remote-as 65103\n   neighbor 10.255.255.23
+    description MCI-CTFSTL-BLF03b_Ethernet50/1\n   redistribute connected route-map
+    RM-CONN-2-BGP\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS
+    activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement api http-commands\n
+    \  protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+cvp_topology:
+  BRD_LEAFS:
+    devices:
+    - MCI-CTFSTL-BLF03a
+    - MCI-CTFSTL-BLF03b
+    parent_container: DC1_L3_LEAFS
+  DC1:
+    devices: []
+    parent_container: FABRIC
+  DC1_L3_LEAFS:
+    devices: []
+    parent_container: DC1
+  DC1_SPINES:
+    devices:
+    - MCI-CTFSTL-SP01
+    - MCI-CTFSTL-SP02
+    parent_container: DC1
+  DMZ_LEAFS:
+    devices:
+    - MCI-CTFSTL-LF02a
+    - MCI-CTFSTL-LF02b
+    parent_container: DC1_L3_LEAFS
+  FABRIC:
+    devices: []
+    parent_container: Tenant
+  SRV_LEAFS:
+    devices:
+    - MCI-CTFSTL-LF01a
+    - MCI-CTFSTL-LF01b
+    parent_container: DC1_L3_LEAFS

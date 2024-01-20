@@ -1,0 +1,49 @@
+---
+cvp_devices:
+  - fqdn: MCI-CTFSTL-BLF03a
+    parentContainerName: BRD_LEAFS
+    configlets:
+      - AVD-FABRIC-_MCI-CTFSTL-BLF03a
+  - fqdn: MCI-CTFSTL-BLF03b
+    parentContainerName: BRD_LEAFS
+    configlets:
+      - AVD-FABRIC-_MCI-CTFSTL-BLF03b
+  - fqdn: MCI-CTFSTL-LF01a
+    parentContainerName: SRV_LEAFS
+    configlets:
+      - AVD-FABRIC-_MCI-CTFSTL-LF01a
+  - fqdn: MCI-CTFSTL-LF01b
+    parentContainerName: SRV_LEAFS
+    configlets:
+      - AVD-FABRIC-_MCI-CTFSTL-LF01b
+  - fqdn: MCI-CTFSTL-LF02a
+    parentContainerName: DMZ_LEAFS
+    configlets:
+      - AVD-FABRIC-_MCI-CTFSTL-LF02a
+  - fqdn: MCI-CTFSTL-LF02b
+    parentContainerName: DMZ_LEAFS
+    configlets:
+      - AVD-FABRIC-_MCI-CTFSTL-LF02b
+  - fqdn: MCI-CTFSTL-SP01
+    parentContainerName: DC1_SPINES
+    configlets:
+      - AVD-FABRIC-_MCI-CTFSTL-SP01
+  - fqdn: MCI-CTFSTL-SP02
+    parentContainerName: DC1_SPINES
+    configlets:
+      - AVD-FABRIC-_MCI-CTFSTL-SP02
+cvp_containers:
+  BRD_LEAFS:
+    parentContainerName: DC1_L3_LEAFS
+  DC1:
+    parentContainerName: FABRIC
+  DC1_L3_LEAFS:
+    parentContainerName: DC1
+  DC1_SPINES:
+    parentContainerName: DC1
+  DMZ_LEAFS:
+    parentContainerName: DC1_L3_LEAFS
+  FABRIC:
+    parentContainerName: Tenant
+  SRV_LEAFS:
+    parentContainerName: DC1_L3_LEAFS

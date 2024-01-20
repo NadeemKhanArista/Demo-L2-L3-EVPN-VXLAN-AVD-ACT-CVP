@@ -1,0 +1,15 @@
+- name: Build Switch configuration
+  hosts: CLOUDVISION
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Create dhcp configuration file
+      import_role:
+          name: arista.avd.dhcp_provisioner
+      vars:
+        ztp_network_summary: 172.18.102.0/24
+        ztp_pool_start: 172.18.102.50
+        ztp_pool_end: 172.18.102.60
+        ztp_lease_time: 300
+        fabric_group: FABRIC
+        ztp_mac_source: system
